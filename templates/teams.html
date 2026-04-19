@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}팀 관리 — SuperSuit AI{% endblock %}
+{% block nav_teams %}active{% endblock %}
+
+{% block content %}
+<div class="p-8">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-2xl font-bold text-slate-800">팀 관리</h1>
+  </div>
+
+  {% if teams %}
+  <div class="grid grid-cols-3 gap-5">
+    {% for team in teams %}
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-lg">👥</div>
+        <h2 class="text-lg font-bold text-slate-800">{{ team.name }}</h2>
+      </div>
+
+      {% if team.description %}
+      <p class="text-sm text-slate-500 mb-4">{{ team.description }}</p>
+      {% endif %}
+
+      <div class="flex flex-col gap-2 mb-5">
+        <div class="flex justify-between items-center py-1 border-b border-slate-50">
+          <span class="text-sm text-slate-500">관여 게임</span>
+          <span class="text-sm font-semibold text-slate-700">{{ team.game_count }}개</span>
+        </div>
+        <div class="flex justify-between items-center py-1">
+          <span class="text-sm text-slate-500">회의 기록</span>
+          <span class="text-sm font-semibold text-slate-700">{{ team.meeting_count }}건</span>
+        </div>
+      </div>
+
+      <a href="/ontology/?team={{ team.id }}" class="block w-full text-center border border-slate-200 text-slate-600 py-2 rounded-lg text-sm hover:bg-slate-50 transition">
+        온톨로지에서 보기 →
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-20">
+    <div class="text-6xl mb-4">👥</div>
+    <h2 class="text-xl font-semibold text-slate-600 mb-2">팀이 없습니다</h2>
+    <p class="text-slate-400 mb-4">회의 음성을 업로드하면 자동으로 팀이 생성됩니다</p>
+    <a href="/upload/" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition inline-block">
+      데이터 업로드 →
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

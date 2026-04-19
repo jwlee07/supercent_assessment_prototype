@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block title %}LLM 질문 — SuperSuit AI{% endblock %}
+{% block nav_ask %}active{% endblock %}
+
+{% block content %}
+<div class="flex flex-col h-screen">
+  <div class="p-8 pb-4 border-b border-slate-200 bg-white">
+    <h1 class="text-xl font-bold text-slate-800">SuperSuit AI에게 질문</h1>
+    <p class="text-sm text-slate-500 mt-0.5">온톨로지 기반으로 게임 개발 인사이트를 알려드립니다</p>
+  </div>
+
+  <div class="flex-1 overflow-y-auto p-8 bg-slate-50" id="chat-area">
+    <!-- 예시 질문 -->
+    <div id="examples" class="mb-6">
+      <p class="text-sm text-slate-500 mb-3">자주 묻는 질문:</p>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="sendQuestion('뱀 메카닉 성공 사례 알려줘')" class="px-4 py-2 bg-white border border-slate-200 rounded-full text-sm text-slate-600 hover:border-indigo-400 hover:text-indigo-600 transition">
+          뱀 메카닉 성공 사례 알려줘
+        </button>
+        <button onclick="sendQuestion('D1이 높은 게임들의 공통점은?')" class="px-4 py-2 bg-white border border-slate-200 rounded-full text-sm text-slate-600 hover:border-indigo-400 hover:text-indigo-600 transition">
+          D1이 높은 게임들의 공통점은?
+        </button>
+        <button onclick="sendQuestion('마케팅 CPI가 가장 낮은 게임은?')" class="px-4 py-2 bg-white border border-slate-200 rounded-full text-sm text-slate-600 hover:border-indigo-400 hover:text-indigo-600 transition">
+          마케팅 CPI가 가장 낮은 게임은?
+        </button>
+        <button onclick="sendQuestion('실패한 가설들의 패턴이 있어?')" class="px-4 py-2 bg-white border border-slate-200 rounded-full text-sm text-slate-600 hover:border-indigo-400 hover:text-indigo-600 transition">
+          실패한 가설들의 패턴이 있어?
+        </button>
+      </div>
+    </div>
+
+    <div id="messages" class="flex flex-col gap-4 max-w-3xl"></div>
+  </div>
+
+  <div class="p-8 pt-4 bg-white border-t border-slate-200">
+    <div class="flex gap-3 max-w-3xl">
+      <input id="question-input" type="text"
+        placeholder="질문을 입력하세요... (예: 어떤 메카닉이 D1 향상에 효과적이었나요?)"
+        class="flex-1 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-indigo-400"
+        onkeydown="if(event.key==='Enter' && !event.shiftKey) { event.preventDefault(); sendQuestion(); }">
+      <button onclick="sendQuestion()" class="bg-indigo-600 text-white px-6 py-3 rounded-xl text-sm font-medium hover:bg-indigo-700 transition">
+        전송
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const CSRF_TOKEN = '{{ csrf_token }}';
+
+function sendQuestion(text) {
+  const input = document.getElementById('question-input');
+  const question = text || input.value.trim();
+  if (!question) return;
+
+  input.value = '';
+  document.getElementById('examples').style.display = 'none';
+
+  const messages = document.getElementById('messages');
+
+  // 사용자 메시지
+  messages.innerHTML += `
+    <div class="flex justify-end">
+      <div class="bg-indigo-600 text-white px-4 py-3 rounded-[18px_18px_4px_18px] max-w-md">
+        <p class="text-sm">${escapeHtml(question)}</p>
+      </div>
+    </div>`;
+
+  // 로딩
+  messages.innerHTML += `
+    <div class="flex gap-3" id="loading-bubble">
+      <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">⚡</div>
+      <div class="bg-white border border-slate-200 rounded-[18px_18px_18px_4px] px-4 py-3">
+        <div class="flex gap-1 items-center">
+          <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
+          <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay:0.15s"></div>
+          <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay:0.3s"></div>
+        </div>
+      </div>
+    </div>`;
+
+  scrollToBottom();
+
+  fetch('/ask/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': CSRF_TOKEN,
+    },
+    body: JSON.stringify({ question }),
+  })
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('loading-bubble').remove();
+
+    let refsHtml = '';
+    if (data.referenced_nodes && data.referenced_nodes.length > 0) {
+      const refs = data.referenced_nodes.map(n =>
+        `<a href="/games/${n.id}/" class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded-full hover:bg-indigo-100 no-underline">${n.name}</a>`
+      ).join('');
+      refsHtml = `<div class="flex flex-wrap gap-1.5 pt-3 mt-3 border-t border-slate-100">
+        <span class="text-xs text-slate-400">참조:</span>${refs}</div>`;
+    }
+
+    const answerHtml = (data.answer || '').replace(/\n/g, '<br>');
+    messages.innerHTML += `
+      <div class="flex gap-3">
+        <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">⚡</div>
+        <div class="bg-white border border-slate-200 rounded-[18px_18px_18px_4px] px-4 py-4 max-w-2xl">
+          <p class="text-sm text-slate-700 leading-relaxed">${answerHtml}</p>
+          ${refsHtml}
+        </div>
+      </div>`;
+    scrollToBottom();
+  })
+  .catch(err => {
+    document.getElementById('loading-bubble').remove();
+    messages.innerHTML += `
+      <div class="flex gap-3">
+        <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">!</div>
+        <div class="bg-white border border-red-200 rounded-[18px_18px_18px_4px] px-4 py-3">
+          <p class="text-sm text-red-600">오류가 발생했습니다. 다시 시도해주세요.</p>
+        </div>
+      </div>`;
+    scrollToBottom();
+  });
+}
+
+function scrollToBottom() {
+  const area = document.getElementById('chat-area');
+  area.scrollTop = area.scrollHeight;
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+{% endblock %}

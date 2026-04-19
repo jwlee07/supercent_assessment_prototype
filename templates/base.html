@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}SuperSuit AI{% endblock %}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+{% block head_extra %}{% endblock %}
+<style>
+  body { font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif; }
+  .sidebar { background: #1e1b4b; width: 240px; min-height: 100vh; position: fixed; top: 0; left: 0; z-index: 10; display: flex; flex-direction: column; padding: 16px; }
+  .nav-item { color: #c7d2fe; padding: 10px 16px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 14px; }
+  .nav-item:hover { background: rgba(255,255,255,0.08); color: #e0e7ff; }
+  .nav-item.active { background: rgba(255,255,255,0.15); color: white; font-weight: 500; }
+  .main-content { margin-left: 240px; min-height: 100vh; background: #f8fafc; }
+</style>
+</head>
+<body>
+
+<!-- 사이드바 -->
+<div class="sidebar">
+  <a href="/" class="flex items-center gap-2 mb-8 mt-2 no-underline">
+    <span class="text-2xl">⚡</span>
+    <span class="text-white font-bold text-lg leading-tight">SuperSuit AI</span>
+  </a>
+
+  <nav class="flex flex-col gap-1 flex-1">
+    <a href="/" class="nav-item {% block nav_game %}{% endblock %}">
+      🎮 <span>게임 목록</span>
+    </a>
+    <a href="/ontology/" class="nav-item {% block nav_ontology %}{% endblock %}">
+      🕸️ <span>온톨로지</span>
+    </a>
+    <a href="/ask/" class="nav-item {% block nav_ask %}{% endblock %}">
+      🤖 <span>LLM</span>
+    </a>
+    <a href="/teams/" class="nav-item {% block nav_teams %}{% endblock %}">
+      👥 <span>팀 관리</span>
+    </a>
+  </nav>
+
+  <a href="/upload/" class="block bg-indigo-600 text-white text-center rounded-lg py-2.5 px-4 text-sm font-medium hover:bg-indigo-700 transition no-underline">
+    + 업로드
+  </a>
+</div>
+
+<!-- 메인 콘텐츠 -->
+<div class="main-content">
+  {% block content %}{% endblock %}
+</div>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

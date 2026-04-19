@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuperSuit AI — Snake Clash! 상세</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+<style>
+  body { font-family: 'Noto Sans KR', sans-serif; }
+  .sidebar { background: #1e1b4b; width: 240px; min-height: 100vh; }
+  .nav-item { color: #c7d2fe; padding: 10px 20px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+  .nav-item:hover { background: rgba(255,255,255,0.08); }
+  .nav-item.active { background: rgba(255,255,255,0.15); color: white; }
+  #graph-container { height: 500px; background: white; border-radius: 12px; border: 1px solid #e2e8f0; }
+</style>
+</head>
+<body class="bg-slate-50 flex">
+
+<!-- 사이드바 -->
+<div class="sidebar flex flex-col p-4 fixed h-full">
+  <div class="flex items-center gap-2 mb-8 mt-2">
+    <span class="text-2xl">⚡</span>
+    <span class="text-white font-bold text-lg leading-tight">SuperSuit AI</span>
+  </div>
+  <nav class="flex flex-col gap-1 flex-1">
+    <div class="nav-item active" onclick="location.href='01_game_list.html'">🎮 <span>게임 목록</span></div>
+    <div class="nav-item" onclick="location.href='03_ontology.html'">🕸️ <span>온톨로지</span></div>
+    <div class="nav-item" onclick="location.href='04_llm.html'">🤖 <span>LLM</span></div>
+    <div class="nav-item" onclick="location.href='05_team.html'">👥 <span>팀 관리</span></div>
+  </nav>
+  <button onclick="location.href='06_upload.html'" class="bg-indigo-600 text-white rounded-lg py-2.5 px-4 text-sm font-medium hover:bg-indigo-700 transition">+ 업로드</button>
+</div>
+
+<!-- 메인 콘텐츠 -->
+<div class="ml-60 flex-1 p-8">
+  <!-- 상단 네비 -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-3">
+      <button onclick="location.href='01_game_list.html'" class="text-slate-500 hover:text-slate-700 text-sm flex items-center gap-1">← 게임목록</button>
+      <span class="text-slate-300">/</span>
+      <h1 class="text-xl font-bold text-slate-800">🐍 Snake Clash!</h1>
+      <span class="px-2 py-0.5 text-xs border border-indigo-300 text-indigo-600 rounded-full">하이퍼캐주얼</span>
+    </div>
+    <button onclick="location.href='06_upload.html'" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">+ 데이터 추가</button>
+  </div>
+
+  <!-- 메인 패널 2분할 -->
+  <div class="flex gap-6">
+    <!-- 좌측: 그래프 -->
+    <div class="flex-1">
+      <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 mb-2">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold text-slate-700 text-sm">온톨로지 서브그래프</h2>
+          <span class="text-xs text-slate-400">노드를 클릭하면 상세 정보를 볼 수 있습니다</span>
+        </div>
+        <div id="graph-container"></div>
+      </div>
+    </div>
+
+    <!-- 우측: 상세 패널 -->
+    <div class="w-72 flex flex-col gap-4">
+
+      <!-- 메카닉 -->
+      <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-700 mb-3 text-sm">메카닉</h3>
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 cursor-pointer">
+            <div class="w-2.5 h-2.5 rounded-full bg-purple-500"></div>
+            <span class="text-sm text-slate-700">뱀 이동 루프</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 cursor-pointer">
+            <div class="w-2.5 h-2.5 rounded-full bg-purple-500"></div>
+            <span class="text-sm text-slate-700">배틀로얄 메카닉</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 cursor-pointer">
+            <div class="w-2.5 h-2.5 rounded-full bg-purple-500"></div>
+            <span class="text-sm text-slate-700">충돌 시스템</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 관여 팀 -->
+      <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-700 mb-3 text-sm">관여 팀</h3>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs">기획팀</span>
+          <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs">개발팀</span>
+          <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs">마케팅팀</span>
+        </div>
+      </div>
+
+      <!-- 가설/결과 -->
+      <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-700 mb-3 text-sm">가설 / 결과</h3>
+        <div class="flex flex-col gap-3">
+          <div class="p-3 bg-green-50 rounded-lg border border-green-200">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span class="text-green-500">✅</span>
+              <span class="text-xs font-medium text-green-700">검증됨</span>
+            </div>
+            <p class="text-xs text-slate-600">조작 단순화 → D1 상승</p>
+            <p class="text-xs text-green-600 mt-1">→ D1 42% 달성</p>
+          </div>
+          <div class="p-3 bg-green-50 rounded-lg border border-green-200">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span class="text-green-500">✅</span>
+              <span class="text-xs font-medium text-green-700">검증됨</span>
+            </div>
+            <p class="text-xs text-slate-600">배틀패스 도입 → DAU 증가</p>
+            <p class="text-xs text-green-600 mt-1">→ DAU +35%</p>
+          </div>
+          <div class="p-3 bg-amber-50 rounded-lg border border-amber-200">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span class="text-amber-500">⏳</span>
+              <span class="text-xs font-medium text-amber-700">진행중</span>
+            </div>
+            <p class="text-xs text-slate-600">v2.0 신규 메카닉 → 재방문율 상승</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 회의 기록 -->
+      <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-700 mb-3 text-sm">회의 기록</h3>
+        <div class="flex flex-col gap-2">
+          <div class="p-3 hover:bg-slate-50 rounded-lg cursor-pointer border border-transparent hover:border-slate-200">
+            <p class="text-xs font-medium text-slate-700">초기 기획 회의</p>
+            <p class="text-xs text-slate-400 mt-0.5">2024.01.15 · 기획팀</p>
+          </div>
+          <div class="p-3 hover:bg-slate-50 rounded-lg cursor-pointer border border-transparent hover:border-slate-200">
+            <p class="text-xs font-medium text-slate-700">라이브옵스 논의</p>
+            <p class="text-xs text-slate-400 mt-0.5">2024.03.20 · 기획팀, 개발팀</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const nodes = new vis.DataSet([
+  { id: 1, label: 'Snake Clash!', color: '#6366f1', size: 35, font: { color: 'white', size: 14 } },
+  { id: 2, label: '뱀 이동 루프', color: '#8b5cf6', size: 25 },
+  { id: 3, label: '배틀로얄', color: '#8b5cf6', size: 22 },
+  { id: 4, label: '충돌 시스템', color: '#8b5cf6', size: 20 },
+  { id: 5, label: '조작단순화→D1상승', color: '#f59e0b', size: 20 },
+  { id: 6, label: 'D1 42%', color: '#22c55e', size: 20 },
+  { id: 7, label: '배틀패스→DAU+35%', color: '#22c55e', size: 20 },
+  { id: 8, label: 'Meta 캠페인\nCPI $0.8', color: '#ec4899', size: 18 },
+  { id: 9, label: '기획팀', color: '#64748b', size: 18 },
+  { id: 10, label: '마케팅팀', color: '#64748b', size: 18 },
+  { id: 11, label: 'Snake.io', color: '#f97316', size: 18 },
+  { id: 12, label: 'D1=42%\nDAU=12000', color: '#06b6d4', size: 20 },
+]);
+
+const edges = new vis.DataSet([
+  { from: 1, to: 2, label: 'HAS_MECHANIC' },
+  { from: 1, to: 3, label: 'HAS_MECHANIC' },
+  { from: 1, to: 4, label: 'HAS_MECHANIC' },
+  { from: 2, to: 5, label: 'HAS_HYPOTHESIS' },
+  { from: 5, to: 6, label: 'HAS_RESULT' },
+  { from: 3, to: 7, label: 'HAS_RESULT' },
+  { from: 1, to: 8, label: 'HAS_CAMPAIGN' },
+  { from: 9, to: 1, label: 'INVOLVED_IN' },
+  { from: 10, to: 1, label: 'INVOLVED_IN' },
+  { from: 1, to: 11, label: 'HAS_COMPETITOR' },
+  { from: 1, to: 12, label: 'HAS_METRIC' },
+]);
+
+const container = document.getElementById('graph-container');
+const data = { nodes, edges };
+const options = {
+  nodes: { shape: 'dot', font: { size: 12 }, borderWidth: 2 },
+  edges: { arrows: { to: { enabled: true, scaleFactor: 0.5 } }, color: { color: '#94a3b8' }, font: { size: 10, color: '#64748b' } },
+  physics: { stabilization: { iterations: 150 }, barnesHut: { gravitationalConstant: -8000 } }
+};
+new vis.Network(container, data, options);
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block title %}{{ game.name }} — SuperSuit AI{% endblock %}
+{% block nav_game %}active{% endblock %}
+
+{% block head_extra %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+<style>
+  #graph-container { height: 500px; border-radius: 12px; border: 1px solid #e2e8f0; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="p-8">
+  <!-- 상단 네비 -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-3">
+      <a href="/" class="text-slate-500 hover:text-slate-700 text-sm">← 게임목록</a>
+      <span class="text-slate-300">/</span>
+      <h1 class="text-xl font-bold text-slate-800">{{ game.name }}</h1>
+      {% if game.genre %}
+      <span class="px-2 py-0.5 text-xs border border-indigo-300 text-indigo-600 rounded-full">{{ game.genre }}</span>
+      {% endif %}
+    </div>
+    <a href="/upload/?game={{ game.id }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">+ 데이터 추가</a>
+  </div>
+
+  <div class="flex gap-6">
+    <!-- 좌측: 그래프 -->
+    <div class="flex-1">
+      <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold text-slate-700 text-sm">온톨로지 서브그래프</h2>
+          <span class="text-xs text-slate-400">노드를 클릭하면 상세 정보를 볼 수 있습니다</span>
+        </div>
+        <div id="graph-container"></div>
+        <!-- 범례 -->
+        <div class="mt-3 flex gap-4 flex-wrap">
+          <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-indigo-500"></div><span class="text-xs text-slate-500">게임</span></div>
+          <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-purple-500"></div><span class="text-xs text-slate-500">메카닉</span></div>
+          <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div><span class="text-xs text-slate-500">가설</span></div>
+          <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-green-500"></div><span class="text-xs text-slate-500">결과</span></div>
+          <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-cyan-500"></div><span class="text-xs text-slate-500">지표</span></div>
+          <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-pink-500"></div><span class="text-xs text-slate-500">캠페인</span></div>
+          <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-slate-500"></div><span class="text-xs text-slate-500">팀</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 우측: 상세 패널 -->
+    <div class="w-72 flex flex-col gap-4">
+
+      <!-- 메카닉 -->
+      <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-700 mb-3 text-sm">메카닉 ({{ mechanics|length }})</h3>
+        {% if mechanics %}
+        <div class="flex flex-col gap-1">
+          {% for m in mechanics %}
+          <div class="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50">
+            <div class="w-2.5 h-2.5 rounded-full bg-purple-500 flex-shrink-0"></div>
+            <span class="text-sm text-slate-700">{{ m.name }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-xs text-slate-400">아직 메카닉 데이터가 없습니다</p>
+        {% endif %}
+      </div>
+
+      <!-- 관여 팀 -->
+      <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-700 mb-3 text-sm">관여 팀</h3>
+        {% if teams %}
+        <div class="flex flex-wrap gap-2">
+          {% for team in teams %}
+          <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs">{{ team.name }}</span>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-xs text-slate-400">팀 데이터가 없습니다</p>
+        {% endif %}
+      </div>
+
+      <!-- 가설/결과 -->
+      <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-700 mb-3 text-sm">가설 / 결과 ({{ hypotheses|length }})</h3>
+        {% if hypotheses %}
+        <div class="flex flex-col gap-3">
+          {% for hyp in hypotheses %}
+          <div class="p-3 rounded-lg border
+            {% if hyp.status == 'validated' %}bg-green-50 border-green-200
+            {% elif hyp.status == 'failed' %}bg-red-50 border-red-200
+            {% else %}bg-amber-50 border-amber-200{% endif %}">
+            <div class="flex items-center gap-1.5 mb-1">
+              {% if hyp.status == 'validated' %}
+              <span class="text-green-500">✅</span><span class="text-xs font-medium text-green-700">검증됨</span>
+              {% elif hyp.status == 'failed' %}
+              <span class="text-red-500">❌</span><span class="text-xs font-medium text-red-700">실패</span>
+              {% else %}
+              <span class="text-amber-500">⏳</span><span class="text-xs font-medium text-amber-700">진행중</span>
+              {% endif %}
+            </div>
+            <p class="text-xs text-slate-600">{{ hyp.content|truncatechars:80 }}</p>
+            {% for result in hyp.results.all %}
+            <p class="text-xs text-green-600 mt-1">→ {{ result.description|truncatechars:60 }}</p>
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-xs text-slate-400">아직 가설 데이터가 없습니다</p>
+        {% endif %}
+      </div>
+
+      <!-- 회의 기록 -->
+      <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-700 mb-3 text-sm">회의 기록 ({{ meetings|length }})</h3>
+        {% if meetings %}
+        <div class="flex flex-col gap-2">
+          {% for meeting in meetings %}
+          <div class="p-3 hover:bg-slate-50 rounded-lg cursor-pointer border border-transparent hover:border-slate-200">
+            <p class="text-xs font-medium text-slate-700">{{ meeting.title|default:"제목 없음" }}</p>
+            <p class="text-xs text-slate-400 mt-0.5">{{ meeting.date|default:"날짜 미정" }} · {{ meeting.domain }}</p>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-xs text-slate-400">회의 기록이 없습니다</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const graphData = {{ graph_data_json|safe }};
+const nodes = new vis.DataSet(graphData.nodes);
+const edges = new vis.DataSet(graphData.edges);
+const container = document.getElementById('graph-container');
+const options = {
+  nodes: { shape: 'dot', font: { size: 12 }, borderWidth: 2, scaling: { min: 15, max: 40 } },
+  edges: {
+    arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+    color: { color: '#94a3b8' },
+    font: { size: 10, color: '#64748b' },
+    smooth: { type: 'continuous' }
+  },
+  physics: { stabilization: { iterations: 150 }, barnesHut: { gravitationalConstant: -8000 } },
+  interaction: { hover: true, tooltipDelay: 200 }
+};
+const network = new vis.Network(container, { nodes, edges }, options);
+</script>
+{% endblock %}
