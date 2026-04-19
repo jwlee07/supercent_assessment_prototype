@@ -772,55 +772,95 @@ Docker + gpt-5.4-mini</div>
   </div>
 </div>
 
-<!-- ========== SLIDE 10: 화면 설계 ========== -->
+<!-- ========== SLIDE 10: 화면 설계 (1/2) ========== -->
 <div class="slide">
   <div class="slide-accent-bar"></div>
   <div class="slide-header">
     <div class="slide-section-tag">화면 설계</div>
-    <div class="slide-title">6개 화면 UI 설계 (mockups/)</div>
+    <div class="slide-title">6개 화면 UI 설계 — 게임 목록 · 게임 상세 · 온톨로지</div>
     <div class="slide-title-bar"></div>
   </div>
-  <div class="slide-body" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
-    <div class="card" style="display:flex;flex-direction:column;gap:7px;">
-      <div style="background:#eef2ff;border-radius:7px;height:80px;display:flex;align-items:center;justify-content:center;font-size:28px;">🎮</div>
-      <div style="font-size:13px;font-weight:700;color:#0f172a;">01. 게임 목록</div>
-      <div style="font-size:11.5px;color:#64748b;line-height:1.5;">게임 카드 그리드 (2열), 메카닉/회의/가설 통계, [+ 새 게임]</div>
-      <code style="font-size:10.5px;color:#6366f1;margin-top:auto;">01_game_list.html</code>
+  <div class="slide-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;flex:1;background:#f8fafc;">
+        <img src="assets/01_game_list.png" alt="게임 목록" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">01. 게임 목록</div>
+        <code style="font-size:10px;color:#6366f1;">game_list</code>
+      </div>
+      <div style="font-size:11px;color:#64748b;line-height:1.5;">게임 카드 그리드, 메카닉/회의/가설 통계</div>
     </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:7px;">
-      <div style="background:#eef2ff;border-radius:7px;height:80px;display:flex;align-items:center;justify-content:center;font-size:28px;">🕸️</div>
-      <div style="font-size:13px;font-weight:700;color:#0f172a;">02. 게임 상세</div>
-      <div style="font-size:11.5px;color:#64748b;line-height:1.5;">좌측 vis.js 서브그래프 + 우측 메카닉/가설/회의 패널</div>
-      <code style="font-size:10.5px;color:#6366f1;margin-top:auto;">02_game_detail.html</code>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;flex:1;background:#f8fafc;">
+        <img src="assets/02_game_detail.png" alt="게임 상세" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">02. 게임 상세</div>
+        <code style="font-size:10px;color:#6366f1;">game_detail</code>
+      </div>
+      <div style="font-size:11px;color:#64748b;line-height:1.5;">vis.js 서브그래프 + 메카닉/가설/회의 패널</div>
     </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:7px;">
-      <div style="background:#eef2ff;border-radius:7px;height:80px;display:flex;align-items:center;justify-content:center;font-size:28px;">🌐</div>
-      <div style="font-size:13px;font-weight:700;color:#0f172a;">03. 온톨로지 전체</div>
-      <div style="font-size:11.5px;color:#64748b;line-height:1.5;">전체 화면 vis.js 그래프, 게임/팀 필터, 노드 유형별 범례</div>
-      <code style="font-size:10.5px;color:#6366f1;margin-top:auto;">03_ontology.html</code>
-    </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:7px;">
-      <div style="background:#eef2ff;border-radius:7px;height:80px;display:flex;align-items:center;justify-content:center;font-size:28px;">🤖</div>
-      <div style="font-size:13px;font-weight:700;color:#0f172a;">04. LLM 질문</div>
-      <div style="font-size:11.5px;color:#64748b;line-height:1.5;">채팅 버블 인터페이스, 참조 노드 출처 표시, 예시 질문 버튼</div>
-      <code style="font-size:10.5px;color:#6366f1;margin-top:auto;">04_llm.html</code>
-    </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:7px;">
-      <div style="background:#eef2ff;border-radius:7px;height:80px;display:flex;align-items:center;justify-content:center;font-size:28px;">👥</div>
-      <div style="font-size:13px;font-weight:700;color:#0f172a;">05. 팀 관리</div>
-      <div style="font-size:11.5px;color:#64748b;line-height:1.5;">팀 카드 그리드 (3열), 관여 게임/회의 수 통계</div>
-      <code style="font-size:10.5px;color:#6366f1;margin-top:auto;">05_team.html</code>
-    </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:7px;">
-      <div style="background:#eef2ff;border-radius:7px;height:80px;display:flex;align-items:center;justify-content:center;font-size:28px;">📤</div>
-      <div style="font-size:13px;font-weight:700;color:#0f172a;">06. 업로드</div>
-      <div style="font-size:11.5px;color:#64748b;line-height:1.5;">3단계 스텝 (게임 선택 → 유형 선택 → 입력 폼)</div>
-      <code style="font-size:10.5px;color:#6366f1;margin-top:auto;">06_upload.html</code>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;flex:1;background:#f8fafc;">
+        <img src="assets/03_ontology.png" alt="온톨로지 그래프" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">03. 온톨로지 그래프</div>
+        <code style="font-size:10px;color:#6366f1;">ontology</code>
+      </div>
+      <div style="font-size:11px;color:#64748b;line-height:1.5;">전체 vis.js 그래프, 게임/팀 필터, 범례</div>
     </div>
   </div>
   <div class="slide-footer">
     <div class="slide-footer-brand">⚡ <span>SuperSuit AI</span></div>
-    <div class="slide-page">10 / 11</div>
+    <div class="slide-page">10 / 12</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 11: 화면 설계 (2/2) ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">화면 설계</div>
+    <div class="slide-title">6개 화면 UI 설계 — LLM 질문 · 팀 관리 · 업로드</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;flex:1;background:#f8fafc;">
+        <img src="assets/04_llm.png" alt="LLM 질문" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">04. LLM 질문</div>
+        <code style="font-size:10px;color:#6366f1;">ask</code>
+      </div>
+      <div style="font-size:11px;color:#64748b;line-height:1.5;">채팅 인터페이스, 참조 노드 출처 표시</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;flex:1;background:#f8fafc;">
+        <img src="assets/05_team.png" alt="팀 관리" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">05. 팀 관리</div>
+        <code style="font-size:10px;color:#6366f1;">teams</code>
+      </div>
+      <div style="font-size:11px;color:#64748b;line-height:1.5;">팀 카드 그리드, 관여 게임/회의 수 통계</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;flex:1;background:#f8fafc;">
+        <img src="assets/06_upload.png" alt="업로드" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">06. 업로드</div>
+        <code style="font-size:10px;color:#6366f1;">upload</code>
+      </div>
+      <div style="font-size:11px;color:#64748b;line-height:1.5;">3단계 스텝 (게임 선택 → 유형 선택 → 입력 폼)</div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand">⚡ <span>SuperSuit AI</span></div>
+    <div class="slide-page">11 / 12</div>
   </div>
 </div>
 
@@ -854,7 +894,7 @@ Docker + gpt-5.4-mini</div>
     <div style="font-size:11px;color:#94a3b8;">⚡ <span style="color:#6366f1;font-weight:600;">SuperSuit AI</span> · AI 프로덕트 기획자 과제전형</div>
   </div>
   <div style="position:absolute;bottom:20px;right:48px;z-index:1;">
-    <div style="font-size:11px;color:#94a3b8;font-weight:600;">11 / 11</div>
+    <div style="font-size:11px;color:#94a3b8;font-weight:600;">12 / 12</div>
   </div>
 </div>
 
