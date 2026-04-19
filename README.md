@@ -73,17 +73,20 @@ python manage.py runserver
 
 ```
 supercent_assessment_prototype/
-├── docs/                    # 기획/설계 문서 (9개)
-│   ├── Product_Overview.md
-│   ├── Problem_Definition.md
-│   ├── User_Flow.md
-│   ├── Tech_Stack.md
-│   ├── Ontology_Design.md
-│   ├── Upload_Types.md
-│   ├── Feature_Spec.md
-│   ├── Db_Schema.md
-│   ├── Api_Spec.md
-│   └── Ui_Spec.md
+├── docs/                    # 기획/설계 문서 (10개)
+│   ├── 01_product/          # 제품 기획
+│   │   ├── Product_Overview.md
+│   │   ├── Problem_Definition.md
+│   │   ├── User_Flow.md
+│   │   └── Feature_Spec.md
+│   ├── 02_design/           # 설계
+│   │   ├── Ontology_Design.md
+│   │   ├── Upload_Types.md
+│   │   ├── Db_Schema.md
+│   │   └── Ui_Spec.md
+│   └── 03_engineering/      # 기술 구현
+│       ├── Tech_Stack.md
+│       └── Api_Spec.md
 ├── mockups/                 # HTML/CSS 목업 (6개 화면)
 │   ├── 01_game_list.html
 │   ├── 02_game_detail.html

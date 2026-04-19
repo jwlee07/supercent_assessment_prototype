@@ -6,18 +6,18 @@
 
 ## 참조 문서 (반드시 먼저 읽을 것)
 
-- `docs/Product_Overview.md` — 제품 개요, 핵심 기능, 대상 사용자
-- `docs/Problem_Definition.md` — 문제 정의, 인터뷰 근거
-- `docs/User_Flow.md` — 사용자 이용 흐름 시나리오
-- `docs/Tech_Stack.md` — 기술 스택 및 선택 근거
-- `docs/Ontology_Design.md` — 5도메인 온톨로지 설계
-- `docs/Upload_Types.md` — 5가지 업로드 유형 명세
+- `docs/01_product/Product_Overview.md` — 제품 개요, 핵심 기능, 대상 사용자
+- `docs/01_product/Problem_Definition.md` — 문제 정의, 인터뷰 근거
+- `docs/01_product/User_Flow.md` — 사용자 이용 흐름 시나리오
+- `docs/03_engineering/Tech_Stack.md` — 기술 스택 및 선택 근거
+- `docs/02_design/Ontology_Design.md` — 5도메인 온톨로지 설계
+- `docs/02_design/Upload_Types.md` — 5가지 업로드 유형 명세
 
 ## 산출물
 
 아래 3개 파일을 생성하세요:
 
-### 1. `docs/Feature_Spec.md`
+### 1. `docs/01_product/Feature_Spec.md`
 
 다음 항목을 포함하여 상세하게 작성:
 
@@ -28,7 +28,7 @@
 - **LLM 질문 기능:** 입력 → 벡터 검색 → GPT 응답 → 출처 노드 표시
 - **팀 관리 기능:** 팀별 필터, 관여 게임/회의 수 요약
 
-### 2. `docs/Db_Schema.md`
+### 2. `docs/02_design/Db_Schema.md`
 
 다음 항목을 포함:
 
@@ -39,7 +39,7 @@
 - **pgvector 임베딩 컬럼:** embedding vector(1536) — 엔티티 노드 테이블 각각에 포함
 - **인덱스:** pgvector ivfflat 인덱스 포함
 
-### 3. `docs/Api_Spec.md`
+### 3. `docs/03_engineering/Api_Spec.md`
 
 다음 엔드포인트를 포함:
 

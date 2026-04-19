@@ -6,14 +6,14 @@
 
 ## 참조 문서 (반드시 먼저 읽을 것)
 
-- `docs/Product_Overview.md` — 제품 개요, 핵심 기능
-- `docs/User_Flow.md` — 사용자 이용 흐름 시나리오
-- `docs/Feature_Spec.md` — 기능 명세 (PM Agent 산출물)
-- `docs/Ontology_Design.md` — 온톨로지 구조
+- `docs/01_product/Product_Overview.md` — 제품 개요, 핵심 기능
+- `docs/01_product/User_Flow.md` — 사용자 이용 흐름 시나리오
+- `docs/01_product/Feature_Spec.md` — 기능 명세 (PM Agent 산출물)
+- `docs/02_design/Ontology_Design.md` — 온톨로지 구조
 
 ## 산출물
 
-### 1. `docs/Ui_Spec.md`
+### 1. `docs/02_design/Ui_Spec.md`
 
 다음 항목을 포함:
 

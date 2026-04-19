@@ -6,14 +6,14 @@
 
 ## 참조 문서 (반드시 먼저 읽을 것)
 
-- `docs/Product_Overview.md` — 제품 개요
-- `docs/Tech_Stack.md` — 기술 스택 상세
-- `docs/Ontology_Design.md` — 온톨로지 구조 및 노드/엣지 명세
-- `docs/Upload_Types.md` — 5가지 업로드 유형 처리 파이프라인
-- `docs/Feature_Spec.md` — 기능 명세 (PM Agent 산출물)
-- `docs/Db_Schema.md` — DB 스키마 (PM Agent 산출물)
-- `docs/Api_Spec.md` — API 명세 (PM Agent 산출물)
-- `docs/Ui_Spec.md` — UI 명세 (Designer Agent 산출물)
+- `docs/01_product/Product_Overview.md` — 제품 개요
+- `docs/03_engineering/Tech_Stack.md` — 기술 스택 상세
+- `docs/02_design/Ontology_Design.md` — 온톨로지 구조 및 노드/엣지 명세
+- `docs/02_design/Upload_Types.md` — 5가지 업로드 유형 처리 파이프라인
+- `docs/01_product/Feature_Spec.md` — 기능 명세 (PM Agent 산출물)
+- `docs/02_design/Db_Schema.md` — DB 스키마 (PM Agent 산출물)
+- `docs/03_engineering/Api_Spec.md` — API 명세 (PM Agent 산출물)
+- `docs/02_design/Ui_Spec.md` — UI 명세 (Designer Agent 산출물)
 - `mockups/` — HTML/CSS 목업 파일 6개 (Designer Agent 산출물)
 
 ## 환경 변수 (.env)
@@ -72,7 +72,7 @@ python-multipart
 
 ### 3. models.py — 5도메인 온톨로지 DB 모델
 
-`docs/Db_Schema.md`를 참조하여 아래 모델을 구현:
+`docs/02_design/Db_Schema.md`를 참조하여 아래 모델을 구현:
 
 - `Game` — 게임 (embedding: VectorField(1536))
 - `Mechanic` — 메카닉 (embedding: VectorField(1536))
@@ -141,7 +141,7 @@ def search_similar(query_vector: list, limit: int = 10) -> list:
 
 ### 5. Views
 
-`docs/Api_Spec.md`를 참조하여 구현:
+`docs/03_engineering/Api_Spec.md`를 참조하여 구현:
 
 - `game_list` — GET `/`
 - `game_detail` — GET `/games/<id>/`
@@ -159,7 +159,7 @@ def search_similar(query_vector: list, limit: int = 10) -> list:
 
 ### 6. Django Templates
 
-`mockups/` HTML 파일과 `docs/Ui_Spec.md`를 참조하여 Django Template으로 변환:
+`mockups/` HTML 파일과 `docs/02_design/Ui_Spec.md`를 참조하여 Django Template으로 변환:
 
 - `base.html` — 사이드바 + 공통 레이아웃 (Tailwind CSS CDN, vis.js CDN)
 - `game_list.html` — 게임 카드 그리드
