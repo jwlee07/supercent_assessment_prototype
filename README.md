@@ -123,6 +123,37 @@ supercent_assessment_prototype/
 
 ---
 
+## 기획/설계 문서 (docs/)
+
+과제 산출물 문서 10개가 3개 카테고리로 구성되어 있습니다.
+
+### 01_product/ — 제품 기획
+
+| 파일 | 내용 |
+|---|---|
+| `Product_Overview.md` | 제품명, 철학, 핵심 문제, 대상 사용자, 포지셔닝 |
+| `Problem_Definition.md` | 문제 정의, 인터뷰 근거 (바울/솔/네이선), 불편 사항 |
+| `User_Flow.md` | 4가지 시나리오별 사용자 이용 흐름 (업로드/질문/탐색/팀관리) |
+| `Feature_Spec.md` | 6개 화면별 기능 명세, UI 요소, 사용자 액션, 시스템 동작 |
+
+### 02_design/ — 설계
+
+| 파일 | 내용 |
+|---|---|
+| `Ontology_Design.md` | 5도메인 온톨로지 구조, 11개 노드/엣지 명세, pgvector 전략 |
+| `Upload_Types.md` | 5가지 업로드 유형별 처리 파이프라인 및 GPT Function Calling 스키마 |
+| `Db_Schema.md` | 전체 ERD, SQL 테이블 정의, Django ORM 모델, pgvector 인덱스 |
+| `Ui_Spec.md` | 디자인 시스템, 색상 팔레트, 화면별 UI 명세, vis.js 설정 |
+
+### 03_engineering/ — 기술 구현
+
+| 파일 | 내용 |
+|---|---|
+| `Tech_Stack.md` | 기술 선택 근거, 전체 아키텍처, 환경변수 설명 |
+| `Api_Spec.md` | 전체 API 엔드포인트 명세 (요청/응답 형식, URL 패턴) |
+
+---
+
 ## 기술 스택
 
 | 기술 | 용도 |
