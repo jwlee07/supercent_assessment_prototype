@@ -165,7 +165,7 @@ LLM 질문 처리
 **요청 (JSON):**
 ```json
 {
-    "question": "뱀 메카닉 성공 사례 알려줘"
+    "question": "Snake Clash! 메카닉 성공 사례 알려줘"
 }
 ```
 
