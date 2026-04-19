@@ -104,12 +104,12 @@ function sendQuestion(text) {
         <span class="text-xs text-slate-400">참조:</span>${refs}</div>`;
     }
 
-    const answerHtml = (data.answer || '').replace(/\n/g, '<br>');
+    const answerHtml = marked.parse(data.answer || '');
     messages.innerHTML += `
       <div class="flex gap-3">
         <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">⚡</div>
-        <div class="bg-white border border-slate-200 rounded-[18px_18px_18px_4px] px-4 py-4 max-w-2xl">
-          <p class="text-sm text-slate-700 leading-relaxed">${answerHtml}</p>
+        <div class="bg-white border border-slate-200 rounded-[18px_18px_18px_4px] px-4 py-4 max-w-2xl prose prose-sm prose-slate max-w-none">
+          ${answerHtml}
           ${refsHtml}
         </div>
       </div>`;

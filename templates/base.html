@@ -5,9 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{% block title %}SuperSuit AI{% endblock %}</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 {% block head_extra %}{% endblock %}
 <style>
   body { font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif; }
+  .prose p { margin: 0.4em 0; font-size: 0.875rem; color: #475569; line-height: 1.7; }
+  .prose strong { color: #1e293b; font-weight: 600; }
+  .prose ul { margin: 0.4em 0 0.4em 1.2em; list-style: disc; }
+  .prose ol { margin: 0.4em 0 0.4em 1.2em; list-style: decimal; }
+  .prose li { font-size: 0.875rem; color: #475569; line-height: 1.7; }
+  .prose h1, .prose h2, .prose h3 { color: #0f172a; font-weight: 700; margin: 0.6em 0 0.3em; }
+  .prose h1 { font-size: 1rem; }
+  .prose h2 { font-size: 0.9375rem; }
+  .prose h3 { font-size: 0.875rem; }
+  .prose code { background: #f1f5f9; color: #6366f1; padding: 1px 5px; border-radius: 4px; font-size: 0.8125rem; }
+  .prose hr { border-color: #e2e8f0; margin: 0.6em 0; }
   .sidebar { background: #1e1b4b; width: 240px; min-height: 100vh; position: fixed; top: 0; left: 0; z-index: 10; display: flex; flex-direction: column; padding: 16px; }
   .nav-item { color: #c7d2fe; padding: 10px 16px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 14px; }
   .nav-item:hover { background: rgba(255,255,255,0.08); color: #e0e7ff; }
