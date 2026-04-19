@@ -133,7 +133,7 @@ def ask_llm(question: str, context_nodes: list) -> str:
                 {"role": "user", "content": f"온톨로지 컨텍스트:\n{context_text}\n\n질문: {question}"}
             ],
             temperature=0.3,
-            max_tokens=800,
+            max_completion_tokens=800,
         )
         return response.choices[0].message.content
     except Exception as e:
