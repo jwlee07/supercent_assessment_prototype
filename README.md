@@ -20,7 +20,7 @@
 ### 1. 사전 준비
 
 - Docker Desktop 설치 및 실행
-- Python 3.9+
+- Python 3.11+
 - OpenAI API 키 (gpt-5.4-mini, text-embedding-3-small)
 - Naver Cloud CLOVA Speech API 키 (선택)
 
@@ -38,7 +38,7 @@ docker run -d \
 ### 3. Python 환경 설정
 
 ```bash
-python -m venv venv
+python3.11 -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
@@ -127,7 +127,7 @@ supercent_assessment_prototype/
 
 | 기술 | 용도 |
 |---|---|
-| Django 4.2 | 풀스택 웹 프레임워크 |
+| Django 5.2 | 풀스택 웹 프레임워크 |
 | PostgreSQL + pgvector | 온톨로지 DB + 벡터 유사도 검색 |
 | Docker | pgvector DB 실행 |
 | CLOVA Speech | 한국어 음성 STT |

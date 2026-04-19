@@ -61,13 +61,12 @@ supersuit_ai/          # Django 프로젝트 루트
 ### 2. requirements.txt
 
 ```
-django==4.2.*
-psycopg2-binary
-pgvector
-python-dotenv
-openai
-requests
-python-multipart
+django>=5.2,<6.0
+psycopg2-binary==2.9.11
+pgvector==0.4.2
+python-dotenv==1.2.2
+openai==2.32.0
+requests==2.33.1
 ```
 
 ### 3. models.py — 5도메인 온톨로지 DB 모델
@@ -218,7 +217,7 @@ Snake Clash!와 Dinosaur Universe에 대한 풍부한 샘플 데이터를 생성
 
 ## 사전 준비
 - Docker Desktop 설치 및 실행
-- Python 3.10+
+- Python 3.11+
 - OpenAI API 키
 - Naver Cloud CLOVA Speech 키
 
@@ -233,7 +232,7 @@ docker run -d \
   pgvector/pgvector:pg16
 
 ### 2. Python 환경 설정
-python -m venv venv
+python3.11 -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
