@@ -1106,92 +1106,88 @@
   </div>
 </div>
 
-<!-- ========== SLIDE 08: 프로토타이핑 방법 ========== -->
+<!-- ========== SLIDE 11: 프로토타이핑 방법 · 바이브 코딩 지시 ========== -->
 <div class="slide">
   <div class="slide-accent-bar"></div>
   <div class="slide-header">
-    <div class="slide-section-tag">⑤ 프로토타이핑 방법</div>
-    <div class="slide-title">실제 프로토타입 제작 방식 — Cursor Subagents</div>
+    <div class="slide-section-tag">⑤⑥ 프로토타이핑 방법 · 바이브 코딩 지시</div>
+    <div class="slide-title">Cursor Subagents 방법론 — 실제 AI 지시 내용</div>
     <div class="slide-title-bar"></div>
   </div>
-  <div class="slide-body" style="display:flex;flex-direction:column;gap:12px;">
-    <p style="font-size:12.5px;color:#334155;line-height:1.6;">단순 코딩이 아닌, <strong style="color:#6366f1;">Cursor Subagents를 활용한 AI 협업 개발 방법론</strong>으로 구현했습니다. 3개 Agent가 순차적으로 산출물을 생성하며, 각 Agent는 이전 Agent의 산출물을 참조 문서로 활용합니다.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;">
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:10px;">
+    <p style="font-size:12px;color:#334155;line-height:1.5;flex-shrink:0;">단순 코딩이 아닌, Cursor Subagents를 활용한 AI 협업 개발 방법론으로 구현. 아래는 각 Agent에게 내린 실제 지시 프롬프트입니다.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;min-height:0;">
 
       <!-- Step 1 -->
-      <div style="border:1px solid #e2e8f0;border-top:3px solid #6366f1;border-radius:10px;padding:14px 16px;background:#ffffff;display:flex;flex-direction:column;gap:8px;">
+      <div style="border:1px solid #e2e8f0;border-top:3px solid #6366f1;border-radius:10px;padding:12px 14px;background:#ffffff;display:flex;flex-direction:column;gap:7px;min-height:0;overflow:hidden;">
         <div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.08em;">Step 1</div>
-        <div style="font-size:14px;font-weight:700;color:#0f172a;">Product Manager Agent</div>
-        <div style="font-size:11px;color:#475569;line-height:1.5;">Feature_Spec.md · Db_Schema.md · Api_Spec.md 작성</div>
-        <div class="code-box" style="flex:1;font-size:10.5px;">역할: SuperSuit AI의
-제품 기획자(PM)
+        <div style="font-size:13px;font-weight:700;color:#0f172a;">Product Manager Agent</div>
+        <div style="font-size:10.5px;color:#475569;line-height:1.4;">제품 기획자 — 기능 명세 · DB 스키마 · API 명세 작성</div>
+        <div class="code-box" style="flex:1;font-size:10px;line-height:1.7;overflow:hidden;">당신은 SuperSuit AI의
+제품 기획자(PM)입니다.
 
-참조: docs/ 전체 문서
+참조: Product_Overview.md
+     Problem_Definition.md
+     User_Flow.md
+     Ontology_Design.md
 
 산출물:
-- Feature_Spec.md
-  (6개 화면 기능 명세)
-- Db_Schema.md
-  (11개 노드 + ERD)
-- Api_Spec.md
-  (14개 엔드포인트)
-
-지침:
-Django 구현 가능 수준
-으로 구체적으로 작성</div>
+① Feature_Spec.md (6개 화면)
+② Db_Schema.md (11개 노드)
+③ Api_Spec.md (14개 엔드포인트)</div>
+        <div style="font-size:10px;color:#475569;">Feature_Spec.md · Db_Schema.md · Api_Spec.md</div>
         <code style="background:#f1f5f9;color:#334155;font-size:10px;padding:3px 8px;border-radius:4px;display:block;">.cursor/agents/product-manager-agent.md</code>
       </div>
 
       <!-- Step 2 -->
-      <div style="border:1px solid #e2e8f0;border-top:3px solid #6366f1;border-radius:10px;padding:14px 16px;background:#ffffff;display:flex;flex-direction:column;gap:8px;">
+      <div style="border:1px solid #e2e8f0;border-top:3px solid #6366f1;border-radius:10px;padding:12px 14px;background:#ffffff;display:flex;flex-direction:column;gap:7px;min-height:0;overflow:hidden;">
         <div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.08em;">Step 2</div>
-        <div style="font-size:14px;font-weight:700;color:#0f172a;">Product Designer Agent</div>
-        <div style="font-size:11px;color:#475569;line-height:1.5;">6개 HTML/CSS 목업 · Ui_Spec.md 작성</div>
-        <div class="code-box" style="flex:1;font-size:10.5px;">역할: SuperSuit AI의
-제품 디자이너
+        <div style="font-size:13px;font-weight:700;color:#0f172a;">Product Designer Agent</div>
+        <div style="font-size:10.5px;color:#475569;line-height:1.4;">제품 디자이너 — HTML/CSS 목업 6개 · UI 명세 작성</div>
+        <div class="code-box" style="flex:1;font-size:10px;line-height:1.7;overflow:hidden;">당신은 SuperSuit AI의
+제품 디자이너입니다.
 
-참조: PM Agent 산출물
+참조: Feature_Spec.md
+     Ontology_Design.md
+     User_Flow.md
 
 산출물:
-- Ui_Spec.md
-  (디자인 시스템 + 화면별)
-- mockups/01~06.html
-  (6개 HTML/CSS 목업)
+① Ui_Spec.md (디자인 시스템)
+② mockups/01~06.html (6개 목업)
 
-기술 요구사항:
-- Tailwind CSS CDN
-- vis.js CDN
-- 독립 실행 가능한 HTML
-- 다크 사이드바 + 라이트
-- 반응형 (최소 1280px)</div>
+기술: Tailwind CDN · vis.js CDN
+다크 사이드바 · 최소 1280px</div>
+        <div style="font-size:10px;color:#475569;">Ui_Spec.md · mockups/01~06.html · vis.js 그래프</div>
         <code style="background:#f1f5f9;color:#334155;font-size:10px;padding:3px 8px;border-radius:4px;display:block;">.cursor/agents/product-designer-agent.md</code>
       </div>
 
       <!-- Step 3 -->
-      <div style="border:1px solid #e2e8f0;border-top:3px solid #6366f1;border-radius:10px;padding:14px 16px;background:#ffffff;display:flex;flex-direction:column;gap:8px;">
+      <div style="border:1px solid #e2e8f0;border-top:3px solid #6366f1;border-radius:10px;padding:12px 14px;background:#ffffff;display:flex;flex-direction:column;gap:7px;min-height:0;overflow:hidden;">
         <div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.08em;">Step 3</div>
-        <div style="font-size:14px;font-weight:700;color:#0f172a;">Fullstack Developer Agent</div>
-        <div style="font-size:11px;color:#475569;line-height:1.5;">Django 풀스택 구현 · models · views · templates · services</div>
-        <div class="code-box" style="flex:1;font-size:10.5px;">역할: SuperSuit AI의
-풀스택 개발자
+        <div style="font-size:13px;font-weight:700;color:#0f172a;">Fullstack Developer Agent</div>
+        <div style="font-size:10.5px;color:#475569;line-height:1.4;">풀스택 개발자 — Django 프로토타입 전체 구현</div>
+        <div class="code-box" style="flex:1;font-size:10px;line-height:1.7;overflow:hidden;">당신은 SuperSuit AI의
+풀스택 개발자입니다.
 
-참조: 모든 docs/ + mockups/
+참조: docs/ 전체 + mockups/
 
-구현 항목:
-- models.py (11개 노드)
-- clova_service.py (STT)
-- gpt_service.py
-  (엔티티추출 + LLM)
-- ontology_service.py
-- 6개 Django 템플릿
-- fixtures/sample_data.json
+구현:
+① models.py (11개 노드)
+② clova_service.py (STT)
+③ gpt_service.py (LLM·임베딩)
+④ 6개 Django 템플릿
+⑤ fixtures/sample_data.json
 
-기술:
-Django 5.2 + pgvector
+기술: Django 5.2 + pgvector
 Docker + gpt-5.4-mini</div>
+        <div style="font-size:10px;color:#475569;">Django 5.2 + pgvector · CLOVA STT + gpt-5.4-mini · 6개 템플릿</div>
         <code style="background:#f1f5f9;color:#334155;font-size:10px;padding:3px 8px;border-radius:4px;display:block;">.cursor/agents/fullstack-developer-agent.md</code>
       </div>
 
+    </div>
+    <!-- 하단 메모 -->
+    <div style="background:#eef2ff;border-left:4px solid #6366f1;border-radius:8px;padding:9px 18px;flex-shrink:0;">
+      <p style="font-size:12px;color:#1e293b;margin:0;">각 Agent는 이전 Agent의 산출물을 참조 문서로 활용 — <strong style="color:#6366f1;">PM → Designer → Developer 순차 실행</strong></p>
     </div>
   </div>
   <div class="slide-footer">
@@ -1200,7 +1196,7 @@ Docker + gpt-5.4-mini</div>
   </div>
 </div>
 
-<!-- ========== SLIDE 10: 화면 설계 ========== -->
+<!-- ========== SLIDE 13: 화면 설계 ========== -->
 <div class="slide">
   <div class="slide-accent-bar"></div>
   <div class="slide-header">
@@ -1272,7 +1268,7 @@ Docker + gpt-5.4-mini</div>
   </div>
 </div>
 
-<!-- ========== SLIDE 11: 마무리 ========== -->
+<!-- ========== SLIDE 14: 마무리 ========== -->
 <div class="slide">
   <div class="slide-accent-bar"></div>
   <div style="position:absolute;right:0;top:0;width:320px;height:100%;background:linear-gradient(160deg,#6366f1,#8b5cf6);clip-path:polygon(20% 0%,100% 0%,100% 100%,0% 100%);"></div>
