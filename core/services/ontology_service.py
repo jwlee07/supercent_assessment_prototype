@@ -54,10 +54,13 @@ def save_entities(game_id: int, entities: dict, meeting: Meeting = None) -> tupl
             )
             created = True
         elif node_type == 'Team':
-            obj, created = Team.objects.get_or_create(
-                name=name,
-                defaults={'description': description}
-            )
+            # 팀은 새로 생성하지 않고 기존 팀 이름과 매칭만 수행
+            try:
+                obj = Team.objects.get(name=name)
+                created = False
+            except Team.DoesNotExist:
+                obj = None
+                created = False
         elif node_type == 'Metric':
             obj = Metric.objects.create(
                 name=name,

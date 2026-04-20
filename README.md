@@ -31,9 +31,11 @@ docker run -d \
   --name supersuit-db \
   -e POSTGRES_DB=supersuit_ai \
   -e POSTGRES_PASSWORD=password \
-  -p 5432:5432 \
+  -p 5433:5432 \
   pgvector/pgvector:pg16
 ```
+
+> **참고:** Mac에 로컬 PostgreSQL이 설치되어 있으면 5432 포트가 충돌합니다. 5433 포트를 사용합니다.
 
 ### 3. Python 환경 설정
 
@@ -46,17 +48,16 @@ pip install -r requirements.txt
 ### 4. 환경변수 설정 (.env)
 
 ```
-DATABASE_URL=postgresql://postgres:password@localhost:5432/supersuit_ai
+DATABASE_URL=postgresql://postgres:password@127.0.0.1:5433/supersuit_ai
 OPENAI_API_KEY=sk-...
 NAVER_CLOUD_API_KEY=...
 NAVER_CLOUD_INVOKE_URL=https://clovaspeech-gw.ncloud.com/...
 ```
 
-### 5. DB 마이그레이션 및 샘플 데이터
+### 5. DB 마이그레이션
 
 ```bash
 python manage.py migrate
-python manage.py loaddata fixtures/sample_data.json
 ```
 
 ### 6. 서버 실행
@@ -116,7 +117,7 @@ supercent_assessment_prototype/
 │   ├── teams.html
 │   └── upload.html
 ├── fixtures/
-│   └── sample_data.json     # Snake Clash!, Dinosaur Universe 샘플
+│   └── sample_data.json     # 비어 있음 (사용자가 직접 데이터 등록)
 ├── requirements.txt
 └── README.md
 ```

@@ -47,9 +47,11 @@ docker run -d \
   --name supersuit-db \
   -e POSTGRES_DB=supersuit_ai \
   -e POSTGRES_PASSWORD=password \
-  -p 5432:5432 \
+  -p 5433:5432 \
   pgvector/pgvector:pg16
 ```
+
+> **참고:** Mac에 로컬 PostgreSQL이 설치된 경우 5432 포트 충돌 방지를 위해 5433 포트를 사용합니다.
 
 ---
 
@@ -96,7 +98,7 @@ docker run -d \
 ## 환경 변수 (.env)
 
 ```
-DATABASE_URL=postgresql://postgres:password@localhost:5432/supersuit_ai
+DATABASE_URL=postgresql://postgres:password@127.0.0.1:5433/supersuit_ai
 OPENAI_API_KEY=sk-...
 NAVER_CLOUD_API_KEY=...
 NAVER_CLOUD_INVOKE_URL=https://clovaspeech-gw.ncloud.com/...

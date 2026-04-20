@@ -8,6 +8,7 @@ urlpatterns = [
     path('ontology/data/', views.ontology_data, name='ontology_data'),
     path('ask/', views.ask_view, name='ask'),
     path('teams/', views.teams, name='teams'),
+    path('teams/create/', views.team_create, name='team_create'),
     path('upload/', views.upload, name='upload'),
     path('upload/audio/', views.upload_audio, name='upload_audio'),
     path('upload/metrics/', views.upload_metrics, name='upload_metrics'),

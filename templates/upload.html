@@ -44,21 +44,25 @@
           <div class="text-3xl mb-2">🎙️</div>
           <div class="text-xs font-medium text-slate-700">회의 음성</div>
         </div>
-        <div class="type-card border-2 border-slate-200 rounded-xl p-4 cursor-pointer text-center transition hover:border-indigo-300 hover:bg-indigo-50" onclick="selectType('metrics', this)">
+        <div class="type-card border-2 border-slate-100 rounded-xl p-4 text-center opacity-40 cursor-not-allowed relative" title="v2 로드맵">
           <div class="text-3xl mb-2">📊</div>
-          <div class="text-xs font-medium text-slate-700">게임 지표</div>
+          <div class="text-xs font-medium text-slate-400">게임 지표</div>
+          <div class="absolute top-1 right-1 text-[9px] font-bold text-amber-500 bg-amber-50 border border-amber-200 rounded px-1">v2</div>
         </div>
-        <div class="type-card border-2 border-slate-200 rounded-xl p-4 cursor-pointer text-center transition hover:border-indigo-300 hover:bg-indigo-50" onclick="selectType('marketing', this)">
+        <div class="type-card border-2 border-slate-100 rounded-xl p-4 text-center opacity-40 cursor-not-allowed relative" title="v2 로드맵">
           <div class="text-3xl mb-2">📣</div>
-          <div class="text-xs font-medium text-slate-700">마케팅 성과</div>
+          <div class="text-xs font-medium text-slate-400">마케팅 성과</div>
+          <div class="absolute top-1 right-1 text-[9px] font-bold text-amber-500 bg-amber-50 border border-amber-200 rounded px-1">v2</div>
         </div>
-        <div class="type-card border-2 border-slate-200 rounded-xl p-4 cursor-pointer text-center transition hover:border-indigo-300 hover:bg-indigo-50" onclick="selectType('research', this)">
+        <div class="type-card border-2 border-slate-100 rounded-xl p-4 text-center opacity-40 cursor-not-allowed relative" title="v2 로드맵">
           <div class="text-3xl mb-2">🔍</div>
-          <div class="text-xs font-medium text-slate-700">경쟁 리서치</div>
+          <div class="text-xs font-medium text-slate-400">경쟁 리서치</div>
+          <div class="absolute top-1 right-1 text-[9px] font-bold text-amber-500 bg-amber-50 border border-amber-200 rounded px-1">v2</div>
         </div>
-        <div class="type-card border-2 border-slate-200 rounded-xl p-4 cursor-pointer text-center transition hover:border-indigo-300 hover:bg-indigo-50" onclick="selectType('abtest', this)">
+        <div class="type-card border-2 border-slate-100 rounded-xl p-4 text-center opacity-40 cursor-not-allowed relative" title="v2 로드맵">
           <div class="text-3xl mb-2">🧪</div>
-          <div class="text-xs font-medium text-slate-700">A/B 테스트</div>
+          <div class="text-xs font-medium text-slate-400">A/B 테스트</div>
+          <div class="absolute top-1 right-1 text-[9px] font-bold text-amber-500 bg-amber-50 border border-amber-200 rounded px-1">v2</div>
         </div>
       </div>
     </div>
@@ -95,18 +99,13 @@
           </div>
         </div>
 
-        <div>
-          <label class="text-xs font-medium text-slate-600 mb-2 block">참여 팀 (다중 선택)</label>
-          <div class="flex gap-4 flex-wrap">
-            {% for team in teams %}
-            <label class="flex items-center gap-1.5 cursor-pointer">
-              <input type="checkbox" name="upload_teams" value="{{ team.id }}" class="text-indigo-600">
-              <span class="text-sm text-slate-600">{{ team.name }}</span>
-            </label>
-            {% empty %}
-            <p class="text-xs text-slate-400">팀을 먼저 업로드 과정에서 자동 생성됩니다</p>
-            {% endfor %}
-          </div>
+        <div class="bg-indigo-50 border border-indigo-100 rounded-lg px-4 py-3">
+          <p class="text-xs text-indigo-600 font-medium">💡 트랜스크립트에서 팀 이름이 감지되면 자동으로 회의에 연결됩니다.</p>
+          {% if teams %}
+          <p class="text-xs text-slate-500 mt-1">등록된 팀: {{ teams|join:", " }}</p>
+          {% else %}
+          <p class="text-xs text-slate-400 mt-1">등록된 팀이 없습니다. <a href="/teams/" class="text-indigo-500 underline">팀 관리</a>에서 먼저 팀을 추가하세요.</p>
+          {% endif %}
         </div>
       </div>
 

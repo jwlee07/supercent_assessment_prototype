@@ -97,6 +97,21 @@ def teams(request):
     return render(request, 'teams.html', {'teams': teams_qs})
 
 
+@csrf_exempt
+@require_http_methods(['POST'])
+def team_create(request):
+    name = request.POST.get('name', '').strip()
+    if not name:
+        return JsonResponse({'error': '팀 이름을 입력해주세요.'}, status=400)
+    team, created = Team.objects.get_or_create(
+        name=name,
+        defaults={'description': request.POST.get('description', '')}
+    )
+    if not created:
+        return JsonResponse({'error': f'"{name}" 팀이 이미 존재합니다.'}, status=400)
+    return JsonResponse({'success': True, 'team_id': team.id, 'team_name': team.name})
+
+
 def upload(request):
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -149,7 +164,6 @@ def upload_audio(request):
 
     meeting_date = request.POST.get('meeting_date') or None
     domain = request.POST.get('domain', '기획')
-    team_ids = request.POST.getlist('teams')
 
     meeting = Meeting.objects.create(
         title=f"{Game.objects.get(id=game_id).name} {domain} 회의",
@@ -159,12 +173,13 @@ def upload_audio(request):
         summary=transcript[:200],
     )
 
-    for tid in team_ids:
-        try:
-            team = Team.objects.get(id=tid)
+    # 트랜스크립트에서 기존 팀 이름 자동 감지 후 연결
+    all_teams = Team.objects.all()
+    matched_teams = []
+    for team in all_teams:
+        if team.name in transcript:
             TeamMeeting.objects.get_or_create(team=team, meeting=meeting)
-        except Team.DoesNotExist:
-            pass
+            matched_teams.append(team.name)
 
     entities = gpt_service.extract_entities(transcript, 'audio')
     nodes_created, edges_created = ontology_service.save_entities(
@@ -176,6 +191,7 @@ def upload_audio(request):
         'meeting_id': meeting.id,
         'nodes_created': nodes_created,
         'edges_created': edges_created,
+        'matched_teams': matched_teams,
         'transcript_preview': transcript[:200],
     })
 
