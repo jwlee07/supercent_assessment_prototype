@@ -163,13 +163,12 @@ def upload_audio(request):
         os.unlink(tmp_path)
 
     meeting_date = request.POST.get('meeting_date') or None
-    domain = request.POST.get('domain', '기획')
     team_ids = request.POST.getlist('teams')
 
+    game = Game.objects.get(id=game_id)
     meeting = Meeting.objects.create(
-        title=f"{Game.objects.get(id=game_id).name} {domain} 회의",
+        title=f"{game.name} 회의",
         date=meeting_date,
-        domain=domain,
         transcript=transcript,
         summary=transcript[:200],
     )
