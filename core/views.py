@@ -164,6 +164,7 @@ def upload_audio(request):
 
     meeting_date = request.POST.get('meeting_date') or None
     domain = request.POST.get('domain', '기획')
+    team_ids = request.POST.getlist('teams')
 
     meeting = Meeting.objects.create(
         title=f"{Game.objects.get(id=game_id).name} {domain} 회의",
@@ -173,13 +174,15 @@ def upload_audio(request):
         summary=transcript[:200],
     )
 
-    # 트랜스크립트에서 기존 팀 이름 자동 감지 후 연결
-    all_teams = Team.objects.all()
-    matched_teams = []
-    for team in all_teams:
-        if team.name in transcript:
+    # 선택된 팀을 회의에 직접 연결
+    linked_teams = []
+    for tid in team_ids:
+        try:
+            team = Team.objects.get(id=tid)
             TeamMeeting.objects.get_or_create(team=team, meeting=meeting)
-            matched_teams.append(team.name)
+            linked_teams.append(team.name)
+        except Team.DoesNotExist:
+            pass
 
     entities = gpt_service.extract_entities(transcript, 'audio')
     nodes_created, edges_created = ontology_service.save_entities(
@@ -191,7 +194,7 @@ def upload_audio(request):
         'meeting_id': meeting.id,
         'nodes_created': nodes_created,
         'edges_created': edges_created,
-        'matched_teams': matched_teams,
+        'linked_teams': linked_teams,
         'transcript_preview': transcript[:200],
     })
 
