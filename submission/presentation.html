@@ -627,87 +627,7 @@
   </div>
 </div>
 
-<!-- ========== SLIDE 05-B: KPI & 기대 효과 ========== -->
-<div class="slide">
-  <div class="slide-accent-bar"></div>
-  <div class="slide-header">
-    <div class="slide-section-tag">② 해결 방법</div>
-    <div class="slide-title">기대 효과 & 성과 지표 (KPI)</div>
-    <div class="slide-title-bar"></div>
-  </div>
-  <div class="slide-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
-
-    <!-- KPI 목표 -->
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;">KPI 목표</div>
-      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
-        <div style="font-size:13px;font-weight:700;color:#0f172a;">중복 실험 감소율</div>
-        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">동일 메카닉 재실험 비율<br><strong style="color:#6366f1;">분기 대비 20% 감소</strong></div>
-      </div>
-      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
-        <div style="font-size:13px;font-weight:700;color:#0f172a;">질문 해결 시간</div>
-        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">기획 질문 → 답변 소요 시간<br><strong style="color:#6366f1;">시니어 대기 1일 → LLM 30초</strong></div>
-      </div>
-      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
-        <div style="font-size:13px;font-weight:700;color:#0f172a;">온톨로지 축적량</div>
-        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">월간 신규 노드 수<br><strong style="color:#6366f1;">월 50개 이상</strong></div>
-      </div>
-      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
-        <div style="font-size:13px;font-weight:700;color:#0f172a;">도구 활성도</div>
-        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">팀별 주간 질문 수<br><strong style="color:#6366f1;">팀당 주 10회 이상</strong></div>
-      </div>
-    </div>
-
-    <!-- 실행 결과 추적 -->
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;">실행 결과 추적</div>
-      <div class="card" style="display:flex;gap:10px;align-items:flex-start;">
-        <span style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 7px;flex-shrink:0;margin-top:1px;">01</span>
-        <div><div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:2px;">자동 로그 수집</div><div style="font-size:11.5px;color:#64748b;line-height:1.5;">/ask API 호출 횟수·응답 시간 DB 자동 기록</div></div>
-      </div>
-      <div class="card" style="display:flex;gap:10px;align-items:flex-start;">
-        <span style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 7px;flex-shrink:0;margin-top:1px;">02</span>
-        <div><div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:2px;">노드 증가량 집계</div><div style="font-size:11.5px;color:#64748b;line-height:1.5;">Mechanic · Hypothesis · Result 레코드 주간 집계</div></div>
-      </div>
-      <div class="card" style="display:flex;gap:10px;align-items:flex-start;">
-        <span style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 7px;flex-shrink:0;margin-top:1px;">03</span>
-        <div><div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:2px;">중복 탐지</div><div style="font-size:11.5px;color:#64748b;line-height:1.5;">신규 업로드 시 pgvector 유사도 검색으로 기존 메카닉 비교</div></div>
-      </div>
-      <div class="card" style="display:flex;gap:10px;align-items:flex-start;">
-        <span style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 7px;flex-shrink:0;margin-top:1px;">04</span>
-        <div><div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:2px;">분기 설문</div><div style="font-size:11.5px;color:#64748b;line-height:1.5;">기획자 대상 지식 접근성 만족도 5점 척도 설문</div></div>
-      </div>
-    </div>
-
-    <!-- 체감 변화 -->
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;">조직/유저가 체감하는 변화</div>
-      <div class="card" style="border-left:3px solid #6366f1;padding-left:12px;">
-        <div style="font-size:11.5px;font-weight:700;color:#6366f1;margin-bottom:3px;">신규 기획자</div>
-        <div style="font-size:12px;color:#334155;line-height:1.6;">온보딩 기간 단축 — 과거 실험 이력을 LLM에 질문하는 것으로 대체</div>
-      </div>
-      <div class="card" style="border-left:3px solid #6366f1;padding-left:12px;">
-        <div style="font-size:11.5px;font-weight:700;color:#6366f1;margin-bottom:3px;">시니어 기획자</div>
-        <div style="font-size:12px;color:#334155;line-height:1.6;">반복 질문 응대 감소 → 병목 해소, 핵심 업무 집중</div>
-      </div>
-      <div class="card" style="border-left:3px solid #6366f1;padding-left:12px;">
-        <div style="font-size:11.5px;font-weight:700;color:#6366f1;margin-bottom:3px;">팀 간 협업</div>
-        <div style="font-size:12px;color:#334155;line-height:1.6;">A팀 메카닉 결과를 B팀이 즉시 검색 → 동일 실험 반복 방지</div>
-      </div>
-      <div class="card" style="border-left:3px solid #6366f1;padding-left:12px;">
-        <div style="font-size:11.5px;font-weight:700;color:#6366f1;margin-bottom:3px;">조직 전체</div>
-        <div style="font-size:12px;color:#334155;line-height:1.6;">분산된 실험 이력이 AI로 검색 가능한 조직 자산으로 전환</div>
-      </div>
-    </div>
-
-  </div>
-  <div class="slide-footer">
-    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
-    <div class="slide-page">6 / 13</div>
-  </div>
-</div>
-
-<!-- ========== SLIDE 05: User Flow ========== -->
+<!-- ========== SLIDE 06: User Flow ========== -->
 <div class="slide">
   <div class="slide-accent-bar"></div>
   <div class="slide-header">
@@ -816,7 +736,7 @@
   </div>
   <div class="slide-footer">
     <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
-    <div class="slide-page">7 / 13</div>
+    <div class="slide-page">6 / 13</div>
   </div>
 </div>
 
@@ -838,7 +758,7 @@
 
       <!-- A1 -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">A1</div>
+        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B1</div>
         <div>
           <div style="font-size:11.5px;font-weight:700;color:#0f172a;">파일 업로드</div>
           <div style="font-size:10px;color:#64748b;">HTTP POST /upload_audio — 음성 파일 수신</div>
@@ -848,7 +768,7 @@
 
       <!-- A2 -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">A2</div>
+        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B2</div>
         <div>
           <div style="font-size:11.5px;font-weight:700;color:#0f172a;">CLOVA STT — 음성 → 텍스트</div>
           <div style="font-size:10px;color:#64748b;">clova_service.transcribe() → transcript 문자열 반환</div>
@@ -858,7 +778,7 @@
 
       <!-- A3 -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">A3</div>
+        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B3</div>
         <div>
           <div style="font-size:11.5px;font-weight:700;color:#0f172a;">gpt-5.4-mini — 엔티티 추출</div>
           <div style="font-size:10px;color:#64748b;">gpt_service.extract_entities() → nodes / edges JSON</div>
@@ -868,7 +788,7 @@
 
       <!-- A4 -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">A4</div>
+        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B4</div>
         <div>
           <div style="font-size:11.5px;font-weight:700;color:#0f172a;">PostgreSQL — 노드 레코드 저장</div>
           <div style="font-size:10px;color:#64748b;">Mechanic / Hypothesis / Result 등 Django Model → DB row</div>
@@ -878,7 +798,7 @@
 
       <!-- A5 -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">A5</div>
+        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B5</div>
         <div>
           <div style="font-size:11.5px;font-weight:700;color:#0f172a;">text-embedding-3-small — 벡터 생성 후 같은 행에 저장</div>
           <div style="font-size:10px;color:#64748b;">gpt_service.embed() → 1536-dim vector → obj.embedding 컬럼 UPDATE</div>
@@ -907,7 +827,7 @@
 
       <!-- B1 -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B1</div>
+        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">C1</div>
         <div>
           <div style="font-size:11.5px;font-weight:700;color:#0f172a;">자연어 질문 입력</div>
           <div style="font-size:10px;color:#64748b;">POST /ask — question 문자열 수신</div>
@@ -917,7 +837,7 @@
 
       <!-- B2 -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B2</div>
+        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">C2</div>
         <div>
           <div style="font-size:11.5px;font-weight:700;color:#0f172a;">text-embedding-3-small — 질문 벡터화</div>
           <div style="font-size:10px;color:#64748b;">gpt_service.embed(question) → 1536-dim query_vector</div>
@@ -927,7 +847,7 @@
 
       <!-- B3 -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B3</div>
+        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">C3</div>
         <div>
           <div style="font-size:11.5px;font-weight:700;color:#0f172a;">PostgreSQL(pgvector) — 코사인 유사도 검색</div>
           <div style="font-size:10px;color:#64748b;">7개 모델 테이블 순회 · CosineDistance(embedding, query_vector) · 각 Top-3</div>
@@ -937,7 +857,7 @@
 
       <!-- B4 -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B4</div>
+        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">C4</div>
         <div>
           <div style="font-size:11.5px;font-weight:700;color:#0f172a;">RAG 컨텍스트 구성</div>
           <div style="font-size:10px;color:#64748b;">Top-10 노드의 type · name · description → system prompt에 삽입</div>
@@ -947,7 +867,7 @@
 
       <!-- B5 -->
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B5</div>
+        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">C5</div>
         <div>
           <div style="font-size:11.5px;font-weight:700;color:#0f172a;">gpt-5.4-mini — 컨텍스트 기반 답변 생성</div>
           <div style="font-size:10px;color:#64748b;">gpt_service.ask_llm(question, context_nodes) → answer 문자열</div>
@@ -972,6 +892,90 @@
   </div>
 </div>
 
+<!-- ========== SLIDE 07: KPI & 기대 효과 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">② 해결 방법</div>
+    <div class="slide-title">기대 효과 & 성과 지표 (KPI)</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+
+    <!-- KPI 목표 -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;">KPI 목표</div>
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:13px;font-weight:700;color:#0f172a;">중복 실험 감소율</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">동일 메카닉 재실험 비율<br><strong style="color:#6366f1;">분기 대비 20% 감소</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">기준: 10개 팀 × 분기 약 5건 중복 추정, 1건 감소 = 20%</div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:13px;font-weight:700;color:#0f172a;">질문 해결 시간</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">기획 질문 → 답변 소요 시간<br><strong style="color:#6366f1;">시니어 대기 1일 → LLM 30초</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">기준: 바울 인터뷰 "자연스럽게 공유" = 시니어 경유 구조 확인</div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:13px;font-weight:700;color:#0f172a;">온톨로지 축적량</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">월간 신규 노드 수<br><strong style="color:#6366f1;">월 50개 이상</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">기준: 팀당 주 1회 회의 × 10팀 × 5노드/회의 = 월 200개</div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:13px;font-weight:700;color:#0f172a;">도구 활성도</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">팀별 주간 질문 수<br><strong style="color:#6366f1;">팀당 주 10회 이상</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">기준: 기획·개발·마케팅 각 1회 이상 질문 가정</div>
+      </div>
+    </div>
+
+    <!-- 실행 결과 추적 -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;">실행 결과 추적</div>
+      <div class="card" style="display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 7px;flex-shrink:0;margin-top:1px;">01</span>
+        <div><div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:2px;">자동 로그 수집</div><div style="font-size:11.5px;color:#64748b;line-height:1.5;">/ask API 호출 횟수·응답 시간 DB 자동 기록</div></div>
+      </div>
+      <div class="card" style="display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 7px;flex-shrink:0;margin-top:1px;">02</span>
+        <div><div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:2px;">노드 증가량 집계</div><div style="font-size:11.5px;color:#64748b;line-height:1.5;">Mechanic · Hypothesis · Result 레코드 주간 집계</div></div>
+      </div>
+      <div class="card" style="display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 7px;flex-shrink:0;margin-top:1px;">03</span>
+        <div><div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:2px;">중복 탐지</div><div style="font-size:11.5px;color:#64748b;line-height:1.5;">신규 업로드 시 pgvector 유사도 검색으로 기존 메카닉 비교</div></div>
+      </div>
+      <div class="card" style="display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 7px;flex-shrink:0;margin-top:1px;">04</span>
+        <div><div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:2px;">분기 설문</div><div style="font-size:11.5px;color:#64748b;line-height:1.5;">기획자 대상 지식 접근성 만족도 5점 척도 설문</div></div>
+      </div>
+    </div>
+
+    <!-- 체감 변화 -->
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;">조직/유저가 체감하는 변화</div>
+      <div class="card" style="border-left:3px solid #6366f1;padding-left:12px;">
+        <div style="font-size:11.5px;font-weight:700;color:#6366f1;margin-bottom:3px;">신규 기획자</div>
+        <div style="font-size:12px;color:#334155;line-height:1.6;">온보딩 기간 단축 — 과거 실험 이력을 LLM에 질문하는 것으로 대체</div>
+      </div>
+      <div class="card" style="border-left:3px solid #6366f1;padding-left:12px;">
+        <div style="font-size:11.5px;font-weight:700;color:#6366f1;margin-bottom:3px;">시니어 기획자</div>
+        <div style="font-size:12px;color:#334155;line-height:1.6;">반복 질문 응대 감소 → 병목 해소, 핵심 업무 집중</div>
+      </div>
+      <div class="card" style="border-left:3px solid #6366f1;padding-left:12px;">
+        <div style="font-size:11.5px;font-weight:700;color:#6366f1;margin-bottom:3px;">팀 간 협업</div>
+        <div style="font-size:12px;color:#334155;line-height:1.6;">A팀 메카닉 결과를 B팀이 즉시 검색 → 동일 실험 반복 방지</div>
+      </div>
+      <div class="card" style="border-left:3px solid #6366f1;padding-left:12px;">
+        <div style="font-size:11.5px;font-weight:700;color:#6366f1;margin-bottom:3px;">조직 전체</div>
+        <div style="font-size:12px;color:#334155;line-height:1.6;">분산된 실험 이력이 AI로 검색 가능한 조직 자산으로 전환</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">7 / 13</div>
+  </div>
+</div>
+
 <!-- ========== SLIDE 06: AI 도구 ========== -->
 <div class="slide">
   <div class="slide-accent-bar"></div>
@@ -980,36 +984,46 @@
     <div class="slide-title">활용 AI 모델 및 도구</div>
     <div class="slide-title-bar"></div>
   </div>
-  <div class="slide-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;align-content:start;">
-    <div class="card" style="display:flex;flex-direction:column;gap:10px;height:100%;">
+  <div class="slide-body" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:18px;align-content:start;">
+    <div class="card" style="display:flex;flex-direction:column;gap:8px;height:100%;">
       <div style="font-size:11px;font-weight:700;color:#334155;background:#f1f5f9;border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:4px;">STT</div>
-      <div style="font-size:16px;font-weight:700;color:#0f172a;">CLOVA Speech</div>
+      <div style="font-size:14px;font-weight:700;color:#0f172a;">CLOVA Speech</div>
       <div style="font-size:11px;font-weight:600;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 8px;display:inline-block;">Naver Cloud</div>
       <div class="card-label" style="margin-top:4px;">역할</div>
-      <p style="font-size:12.5px;color:#475569;line-height:1.6;flex:1;">음성 파일(mp3, wav) → 한국어 텍스트 변환 (STT)</p>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;flex:1;">음성 파일(mp3, wav) → 한국어 텍스트 변환 (STT)</p>
       <div class="card-label">선택 이유</div>
-      <p style="font-size:12.5px;color:#475569;line-height:1.6;">한국어 특화 STT. 게임 개발 전문 용어(D1, ARPU, 메카닉 등) 인식 정확도 최고</p>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;">한국어 특화 STT. 게임 개발 전문 용어(D1, ARPU, 메카닉 등) 인식 정확도 최고</p>
       <div style="background:#f1f5f9;border-radius:6px;padding:6px 10px;font-size:12px;color:#334155;font-weight:600;margin-top:auto;">월 4시간 무료</div>
     </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:10px;height:100%;">
+    <div class="card" style="display:flex;flex-direction:column;gap:8px;height:100%;">
       <div style="font-size:11px;font-weight:700;color:#334155;background:#f1f5f9;border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:4px;">LLM</div>
-      <div style="font-size:16px;font-weight:700;color:#0f172a;">gpt-5.4-mini</div>
+      <div style="font-size:14px;font-weight:700;color:#0f172a;">gpt-5.4-mini</div>
       <div style="font-size:11px;font-weight:600;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 8px;display:inline-block;">OpenAI</div>
       <div class="card-label" style="margin-top:4px;">역할</div>
-      <div style="font-size:12.5px;color:#475569;line-height:1.6;flex:1;">① 텍스트 → 온톨로지 엔티티 추출 (Function Calling)<br>② 자연어 질문 → 온톨로지 컨텍스트 기반 응답</div>
+      <div style="font-size:11.5px;color:#475569;line-height:1.6;flex:1;">① 텍스트 → 온톨로지 엔티티 추출 (Function Calling)<br>② 자연어 질문 → 온톨로지 컨텍스트 기반 응답</div>
       <div class="card-label">선택 이유</div>
-      <p style="font-size:12.5px;color:#475569;line-height:1.6;">최신 플래그십 미니 모델. 한국어 처리 + JSON 구조화 정확도 최상</p>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;">최신 플래그십 미니 모델. 한국어 처리 + JSON 구조화 정확도 최상</p>
       <div style="background:#f1f5f9;border-radius:6px;padding:6px 10px;font-size:12px;color:#334155;font-weight:600;margin-top:auto;">$0.75 / 1M input · $4.50 / 1M output</div>
     </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:10px;height:100%;">
+    <div class="card" style="display:flex;flex-direction:column;gap:8px;height:100%;">
       <div style="font-size:11px;font-weight:700;color:#334155;background:#f1f5f9;border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:4px;">Embedding</div>
-      <div style="font-size:16px;font-weight:700;color:#0f172a;">text-embedding-3-small</div>
+      <div style="font-size:14px;font-weight:700;color:#0f172a;">text-embedding-3-small</div>
       <div style="font-size:11px;font-weight:600;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 8px;display:inline-block;">OpenAI</div>
       <div class="card-label" style="margin-top:4px;">역할</div>
-      <p style="font-size:12.5px;color:#475569;line-height:1.6;flex:1;">각 온톨로지 노드 텍스트 → 1536차원 벡터 변환. pgvector에 저장 후 의미 기반 유사도 검색</p>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;flex:1;">각 온톨로지 노드 텍스트 → 1536차원 벡터 변환. pgvector에 저장 후 의미 기반 유사도 검색</p>
       <div class="card-label">선택 이유</div>
-      <p style="font-size:12.5px;color:#475569;line-height:1.6;">비용 대비 성능 최적. 한국어 임베딩 품질 우수</p>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;">비용 대비 성능 최적. 한국어 임베딩 품질 우수</p>
       <div style="background:#f1f5f9;border-radius:6px;padding:6px 10px;font-size:12px;color:#334155;font-weight:600;margin-top:auto;">$0.02 / 1M tokens</div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:8px;height:100%;">
+      <div style="font-size:11px;font-weight:700;color:#334155;background:#f1f5f9;border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:4px;">AI 개발 환경</div>
+      <div style="font-size:14px;font-weight:700;color:#0f172a;">Cursor Subagents</div>
+      <div style="font-size:11px;font-weight:600;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 8px;display:inline-block;">Anysphere</div>
+      <div class="card-label" style="margin-top:4px;">역할</div>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;flex:1;">PM · Designer · Developer Agent를 순차 실행하여 기획 산출물 → UI 목업 → Django 구현까지 AI 협업 개발 파이프라인 구성</p>
+      <div class="card-label">선택 이유</div>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;">역할별 컨텍스트 분리로 각 Agent가 이전 산출물을 참조하며 단계적으로 구현 — 단순 코딩 보조가 아닌 AI 협업 방법론</p>
+      <div style="background:#f1f5f9;border-radius:6px;padding:6px 10px;font-size:12px;color:#334155;font-weight:600;margin-top:auto;">PM → Designer → Developer 순차 실행</div>
     </div>
   </div>
   <div class="slide-footer">
@@ -1033,13 +1047,13 @@
         <p style="font-size:13px;color:#1e293b;line-height:1.7;">회의 음성과 게임 데이터가 자동으로 온톨로지에 쌓이고, LLM으로 과거 지식을 즉시 검색할 수 있다는 것을 <strong style="color:#6366f1;">실제 동작하는 Django 앱</strong>으로 검증</p>
       </div>
       <div class="card">
-        <div class="card-label">구현 범위</div>
+        <div class="card-label">구현 범위 & v2 확장 로드맵</div>
         <div style="display:flex;flex-direction:column;gap:5px;">
           <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;"><span style="color:#22c55e;font-weight:700;flex-shrink:0;">✓</span><span style="color:#334155;"><strong>음성 업로드 풀 파이프라인</strong> — CLOVA Speech STT → gpt-5.4-mini 엔티티 추출 → pgvector 저장</span></div>
           <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;"><span style="color:#22c55e;font-weight:700;flex-shrink:0;">✓</span><span style="color:#334155;">vis.js 인터랙티브 온톨로지 그래프</span></div>
           <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;"><span style="color:#22c55e;font-weight:700;flex-shrink:0;">✓</span><span style="color:#334155;">LLM 자연어 질문 + 참조 노드 출처 표시</span></div>
           <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;"><span style="color:#22c55e;font-weight:700;flex-shrink:0;">✓</span><span style="color:#334155;">Snake Clash!, Dinosaur Universe 샘플 데이터</span></div>
-          <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;"><span style="color:#94a3b8;font-weight:700;flex-shrink:0;">✗</span><span style="color:#94a3b8;">지표·마케팅·리서치·A/B 테스트 업로드 — 미구현 (샘플 데이터로 대체)</span></div>
+          <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;"><span style="color:#f59e0b;font-weight:700;flex-shrink:0;">v2</span><span style="color:#94a3b8;">지표·마케팅·리서치·A/B 테스트 업로드 (v2 로드맵)</span></div>
         </div>
       </div>
       <div class="card">
@@ -1064,35 +1078,35 @@
           <span style="color:#6366f1;text-align:center;font-weight:700;">→</span>
           <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:5px;padding:7px 10px;color:#6366f1;font-weight:600;">Meeting · Mechanic · Hypothesis 노드</div>
         </div>
-        <!-- 이하 4개: 미구현 -->
-        <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.45;">
+        <!-- 이하 4개: v2 로드맵 -->
+        <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.7;">
           <div style="background:#f1f5f9;border-radius:5px;padding:7px 10px;">
             <div style="color:#94a3b8;">게임 지표 (CSV/JSON)</div>
-            <div style="font-size:10px;color:#cbd5e1;margin-top:2px;">미구현</div>
+            <div style="font-size:10px;color:#f59e0b;margin-top:2px;">v2 로드맵</div>
           </div>
           <span style="color:#cbd5e1;text-align:center;font-weight:700;">→</span>
           <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;padding:7px 10px;color:#94a3b8;">Metric 노드</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.45;">
+        <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.7;">
           <div style="background:#f1f5f9;border-radius:5px;padding:7px 10px;">
             <div style="color:#94a3b8;">마케팅 성과 (CSV)</div>
-            <div style="font-size:10px;color:#cbd5e1;margin-top:2px;">미구현</div>
+            <div style="font-size:10px;color:#f59e0b;margin-top:2px;">v2 로드맵</div>
           </div>
           <span style="color:#cbd5e1;text-align:center;font-weight:700;">→</span>
           <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;padding:7px 10px;color:#94a3b8;">Campaign 노드</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.45;">
+        <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.7;">
           <div style="background:#f1f5f9;border-radius:5px;padding:7px 10px;">
             <div style="color:#94a3b8;">경쟁 리서치 (PDF/TXT)</div>
-            <div style="font-size:10px;color:#cbd5e1;margin-top:2px;">미구현</div>
+            <div style="font-size:10px;color:#f59e0b;margin-top:2px;">v2 로드맵</div>
           </div>
           <span style="color:#cbd5e1;text-align:center;font-weight:700;">→</span>
           <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;padding:7px 10px;color:#94a3b8;">CompetitorGame 노드</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.45;">
+        <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.7;">
           <div style="background:#f1f5f9;border-radius:5px;padding:7px 10px;">
             <div style="color:#94a3b8;">A/B 테스트 결과 (CSV)</div>
-            <div style="font-size:10px;color:#cbd5e1;margin-top:2px;">미구현</div>
+            <div style="font-size:10px;color:#f59e0b;margin-top:2px;">v2 로드맵</div>
           </div>
           <span style="color:#cbd5e1;text-align:center;font-weight:700;">→</span>
           <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;padding:7px 10px;color:#94a3b8;">ABTest + Hypothesis 업데이트</div>
