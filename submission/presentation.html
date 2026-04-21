@@ -680,7 +680,7 @@
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
         <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">사용자</div>
         <div style="font-size:12.5px;font-weight:600;color:#0f172a;">게임 선택 + 파일 업로드</div>
-        <div style="font-size:10px;color:#94a3b8;margin-top:3px;">음성·지표·마케팅·리서치·A/B</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:3px;">회의 음성 (v1 구현)</div>
       </div>
       <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
@@ -750,149 +750,101 @@
   </div>
 </div>
 
-<!-- ========== SLIDE 06: 시스템 흐름도 ========== -->
+<!-- ========== SLIDE 07: 시스템 구조도 ========== -->
 <div class="slide">
   <div class="slide-accent-bar"></div>
   <div class="slide-header">
     <div class="slide-section-tag">② 해결 방법</div>
-    <div class="slide-title">시나리오별 시스템 흐름도</div>
+    <div class="slide-title">시스템 구조도</div>
     <div class="slide-title-bar"></div>
   </div>
-  <div class="slide-body" style="display:grid;grid-template-columns:1fr 1px 1fr;gap:0 20px;">
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:12px;">
 
-    <!-- ── 시나리오 A ── -->
-    <div style="display:flex;flex-direction:column;gap:0;">
-      <div style="font-size:10.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">
-        시나리오 B — 데이터 업로드 → 온톨로지 축적
-      </div>
-
-      <!-- A1 -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B1</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">파일 업로드</div>
-          <div style="font-size:10px;color:#64748b;">HTTP POST /upload_audio — 음성 파일 수신</div>
+    <!-- 레이어 1: 사용자 (Presentation) -->
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.07em;">Presentation Layer</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#0f172a;margin-bottom:2px;">게임 목록 / 상세</div>
+          <div style="font-size:10px;color:#94a3b8;">Django Template</div>
         </div>
-      </div>
-      <div style="text-align:center;font-size:9px;color:#94a3b8;line-height:2;">↓ 음성 파일 (mp3/wav)</div>
-
-      <!-- A2 -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B2</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">CLOVA STT — 음성 → 텍스트</div>
-          <div style="font-size:10px;color:#64748b;">clova_service.transcribe() → transcript 문자열 반환</div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#0f172a;margin-bottom:2px;">데이터 업로드</div>
+          <div style="font-size:10px;color:#94a3b8;">Django Template</div>
         </div>
-      </div>
-      <div style="text-align:center;font-size:9px;color:#94a3b8;line-height:2;">↓ transcript (자연어 텍스트)</div>
-
-      <!-- A3 -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B3</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">gpt-5.4-mini — 엔티티 추출</div>
-          <div style="font-size:10px;color:#64748b;">gpt_service.extract_entities() → nodes / edges JSON</div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#0f172a;margin-bottom:2px;">온톨로지 시각화</div>
+          <div style="font-size:10px;color:#94a3b8;">vis.js Network</div>
         </div>
-      </div>
-      <div style="text-align:center;font-size:9px;color:#94a3b8;line-height:2;">↓ {nodes: [{type, name, ...}], edges: [...]}</div>
-
-      <!-- A4 -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B4</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">PostgreSQL — 노드 레코드 저장</div>
-          <div style="font-size:10px;color:#64748b;">Mechanic / Hypothesis / Result 등 Django Model → DB row</div>
-        </div>
-      </div>
-      <div style="text-align:center;font-size:9px;color:#94a3b8;line-height:2;">↓ 저장된 obj (id 확보)</div>
-
-      <!-- A5 -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">B5</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">text-embedding-3-small — 벡터 생성 후 같은 행에 저장</div>
-          <div style="font-size:10px;color:#64748b;">gpt_service.embed() → 1536-dim vector → obj.embedding 컬럼 UPDATE</div>
-        </div>
-      </div>
-      <div style="text-align:center;font-size:9px;color:#94a3b8;line-height:2;">↓ 관계 테이블에 엣지 기록 (GameMechanic 등)</div>
-
-      <!-- A6 -->
-      <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">결과</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">온톨로지 그래프 갱신</div>
-          <div style="font-size:10px;color:#64748b;">get_graph_data() → vis.js 노드/엣지 렌더링</div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#0f172a;margin-bottom:2px;">LLM 질문 채팅</div>
+          <div style="font-size:10px;color:#94a3b8;">Django Template</div>
         </div>
       </div>
     </div>
 
-    <!-- 구분선 -->
-    <div style="background:#e2e8f0;"></div>
+    <!-- 화살표 -->
+    <div style="text-align:center;font-size:11px;color:#94a3b8;letter-spacing:0.05em;">↕ HTTP / JSON</div>
 
-    <!-- ── 시나리오 B ── -->
-    <div style="display:flex;flex-direction:column;gap:0;">
-      <div style="font-size:10.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">
-        시나리오 C — 자연어 질문 → LLM 인사이트 (RAG)
-      </div>
-
-      <!-- B1 -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">C1</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">자연어 질문 입력</div>
-          <div style="font-size:10px;color:#64748b;">POST /ask — question 문자열 수신</div>
+    <!-- 레이어 2: 백엔드 (Application) -->
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.07em;">Application Layer — Django 5.2</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+        <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;">
+          <div style="font-size:11px;font-weight:700;color:#4338ca;margin-bottom:4px;">views.py</div>
+          <div style="font-size:10px;color:#475569;line-height:1.6;">게임·팀 CRUD<br>음성 업로드 처리<br>온톨로지 조회<br>LLM 질문 응답</div>
+        </div>
+        <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;">
+          <div style="font-size:11px;font-weight:700;color:#4338ca;margin-bottom:4px;">gpt_service.py</div>
+          <div style="font-size:10px;color:#475569;line-height:1.6;">엔티티 추출 (Function Calling)<br>텍스트 임베딩 생성<br>RAG 기반 LLM 응답</div>
+        </div>
+        <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;">
+          <div style="font-size:11px;font-weight:700;color:#4338ca;margin-bottom:4px;">ontology_service.py</div>
+          <div style="font-size:10px;color:#475569;line-height:1.6;">노드·엣지 DB 저장<br>그래프 데이터 조회<br>벡터 유사도 검색</div>
         </div>
       </div>
-      <div style="text-align:center;font-size:9px;color:#94a3b8;line-height:2;">↓ question string</div>
+    </div>
 
-      <!-- B2 -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">C2</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">text-embedding-3-small — 질문 벡터화</div>
-          <div style="font-size:10px;color:#64748b;">gpt_service.embed(question) → 1536-dim query_vector</div>
+    <!-- 화살표 -->
+    <div style="text-align:center;font-size:11px;color:#94a3b8;letter-spacing:0.05em;">↕ API 호출 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↕ SQL + pgvector</div>
+
+    <!-- 레이어 3: 외부 API + DB -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+      <!-- 외부 API -->
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.07em;">External API</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+          <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:8px 10px;text-align:center;">
+            <div style="font-size:10.5px;font-weight:700;color:#7c3aed;margin-bottom:2px;">gpt-5.4-mini</div>
+            <div style="font-size:9.5px;color:#94a3b8;">엔티티 추출<br>LLM 응답</div>
+          </div>
+          <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:8px 10px;text-align:center;">
+            <div style="font-size:10.5px;font-weight:700;color:#7c3aed;margin-bottom:2px;">text-embedding<br>-3-small</div>
+            <div style="font-size:9.5px;color:#94a3b8;">1536차원<br>벡터 생성</div>
+          </div>
+          <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:8px 10px;text-align:center;">
+            <div style="font-size:10.5px;font-weight:700;color:#7c3aed;margin-bottom:2px;">CLOVA Speech</div>
+            <div style="font-size:9.5px;color:#94a3b8;">음성 → 텍스트<br>(STT)</div>
+          </div>
         </div>
       </div>
-      <div style="text-align:center;font-size:9px;color:#94a3b8;line-height:2;">↓ query_vector [1536-dim]</div>
 
-      <!-- B3 -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">C3</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">PostgreSQL(pgvector) — 코사인 유사도 검색</div>
-          <div style="font-size:10px;color:#64748b;">7개 모델 테이블 순회 · CosineDistance(embedding, query_vector) · 각 Top-3</div>
+      <!-- 데이터 저장소 -->
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.07em;">Data Layer</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:8px 12px;text-align:center;">
+            <div style="font-size:10.5px;font-weight:700;color:#15803d;margin-bottom:2px;">PostgreSQL</div>
+            <div style="font-size:9.5px;color:#94a3b8;">게임·팀·메카닉<br>가설·결과 노드</div>
+          </div>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:8px 12px;text-align:center;">
+            <div style="font-size:10.5px;font-weight:700;color:#15803d;margin-bottom:2px;">pgvector</div>
+            <div style="font-size:9.5px;color:#94a3b8;">1536차원 임베딩<br>코사인 유사도 검색</div>
+          </div>
         </div>
       </div>
-      <div style="text-align:center;font-size:9px;color:#94a3b8;line-height:2;">↓ 최대 21개 후보 → 거리 오름차순 정렬 → Top-10</div>
 
-      <!-- B4 -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">C4</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">RAG 컨텍스트 구성</div>
-          <div style="font-size:10px;color:#64748b;">Top-10 노드의 type · name · description → system prompt에 삽입</div>
-        </div>
-      </div>
-      <div style="text-align:center;font-size:9px;color:#94a3b8;line-height:2;">↓ [system: 컨텍스트 노드] + [user: 질문]</div>
-
-      <!-- B5 -->
-      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">C5</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">gpt-5.4-mini — 컨텍스트 기반 답변 생성</div>
-          <div style="font-size:10px;color:#64748b;">gpt_service.ask_llm(question, context_nodes) → answer 문자열</div>
-        </div>
-      </div>
-      <div style="text-align:center;font-size:9px;color:#94a3b8;line-height:2;">↓ answer + referenced_nodes (Top-5)</div>
-
-      <!-- B6 -->
-      <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;padding:7px 12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:9.5px;font-weight:700;color:#6366f1;min-width:28px;">결과</div>
-        <div>
-          <div style="font-size:11.5px;font-weight:700;color:#0f172a;">인사이트 응답 + 참조 노드 표시</div>
-          <div style="font-size:10px;color:#64748b;">JSON {answer, referenced_nodes} → 채팅 UI 렌더링</div>
-        </div>
-      </div>
     </div>
 
   </div>
