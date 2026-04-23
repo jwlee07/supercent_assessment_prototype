@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block title %}SuperSuit AI{% endblock %}
+{% block nav_game %}active{% endblock %}
+
+{% block content %}
+<div class="p-8">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-2xl font-bold text-slate-800">게임 목록</h1>
+    <button onclick="showAddGameModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">+ 새 게임</button>
+  </div>
+
+  {% if games %}
+  <div class="grid grid-cols-2 gap-6">
+    {% for game in games %}
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition cursor-pointer" onclick="location.href='/games/{{ game.id }}/'">
+      <div class="flex items-start justify-between mb-3">
+        <div>
+          <h2 class="text-xl font-bold text-slate-800">{{ game.name }}</h2>
+          {% if game.genre %}
+          <span class="inline-block mt-1 px-2 py-0.5 text-xs border border-indigo-300 text-indigo-600 rounded-full">{{ game.genre }}</span>
+          {% endif %}
+        </div>
+        <span class="text-2xl">🎮</span>
+      </div>
+
+      {% if game.description %}
+      <p class="text-sm text-slate-500 mb-4 line-clamp-2">{{ game.description }}</p>
+      {% endif %}
+
+      <div class="flex gap-6 mt-4 mb-5">
+        <div class="text-center">
+          <div class="text-xl font-bold text-indigo-600">{{ game.mechanic_count }}</div>
+          <div class="text-xs text-slate-500">메카닉</div>
+        </div>
+        <div class="text-center">
+          <div class="text-xl font-bold text-indigo-600">{{ game.meeting_count }}</div>
+          <div class="text-xs text-slate-500">회의</div>
+        </div>
+        <div class="text-center">
+          <div class="text-xl font-bold text-indigo-600">{{ game.hypothesis_count }}</div>
+          <div class="text-xs text-slate-500">가설</div>
+        </div>
+      </div>
+
+      <button class="w-full bg-indigo-50 text-indigo-600 border border-indigo-200 py-2 rounded-lg text-sm font-medium hover:bg-indigo-100 transition">
+        상세보기 →
+      </button>
+    </div>
+    {% endfor %}
+
+    <!-- 새 게임 추가 카드 -->
+    <div onclick="showAddGameModal()" class="bg-white rounded-xl p-6 shadow-sm border-2 border-dashed border-slate-300 flex items-center justify-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition" style="min-height:200px">
+      <div class="text-center text-slate-400">
+        <div class="text-4xl mb-2">+</div>
+        <div class="text-sm">새 게임 추가</div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="text-center py-20">
+    <div class="text-6xl mb-4">🎮</div>
+    <h2 class="text-xl font-semibold text-slate-600 mb-2">아직 게임이 없습니다</h2>
+    <p class="text-slate-400 mb-6">첫 번째 게임을 추가하고 데이터를 업로드해보세요</p>
+    <button onclick="showAddGameModal()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition">+ 첫 게임 추가</button>
+  </div>
+  {% endif %}
+</div>
+
+<!-- 새 게임 추가 모달 -->
+<div id="add-game-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl p-8 w-full max-w-md shadow-2xl">
+    <h2 class="text-xl font-bold text-slate-800 mb-6">새 게임 추가</h2>
+    <form method="post" action="/upload/">
+      {% csrf_token %}
+      <div class="mb-4">
+        <label class="text-sm font-medium text-slate-600 mb-1 block">게임명 *</label>
+        <input id="new-game-name" type="text" placeholder="예: Snake Clash!" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400">
+      </div>
+      <div class="mb-4">
+        <label class="text-sm font-medium text-slate-600 mb-1 block">장르</label>
+        <select id="new-game-genre" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400">
+          <option value="">선택 안 함</option>
+          <option>하이퍼캐주얼</option>
+          <option>하이브리드 캐주얼</option>
+          <option>캐주얼</option>
+          <option>미드코어</option>
+        </select>
+      </div>
+      <div class="mb-6">
+        <label class="text-sm font-medium text-slate-600 mb-1 block">설명</label>
+        <textarea id="new-game-desc" rows="3" placeholder="게임 설명..." class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
+      </div>
+      <div class="flex gap-3">
+        <button type="button" onclick="hideAddGameModal()" class="flex-1 border border-slate-200 text-slate-600 py-2.5 rounded-lg text-sm hover:bg-slate-50 transition">취소</button>
+        <button type="button" onclick="addGame()" class="flex-1 bg-indigo-600 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">추가</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showAddGameModal() {
+  document.getElementById('add-game-modal').classList.remove('hidden');
+}
+function hideAddGameModal() {
+  document.getElementById('add-game-modal').classList.add('hidden');
+}
+
+function addGame() {
+  const name = document.getElementById('new-game-name').value.trim();
+  if (!name) { alert('게임명을 입력해주세요.'); return; }
+  const genre = document.getElementById('new-game-genre').value;
+  const desc = document.getElementById('new-game-desc').value;
+
+  fetch('/upload/', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': '{{ csrf_token }}'},
+    body: `action=add_game&name=${encodeURIComponent(name)}&genre=${encodeURIComponent(genre)}&description=${encodeURIComponent(desc)}`
+  }).then(() => location.reload()).catch(() => {
+    // 직접 게임 생성 (간단한 방법)
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/upload/';
+    form.innerHTML = `<input name="action" value="add_game"><input name="name" value="${name}"><input name="genre" value="${genre}">{% csrf_token %}`;
+    document.body.appendChild(form);
+    form.submit();
+  });
+}
+</script>
+{% endblock %}

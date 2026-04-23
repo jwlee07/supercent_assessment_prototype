@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperSuit AI — AI 프로덕트 기획자 과제전형</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 슬라이드 컨테이너 — 16:9 고정 */
+    .slide-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #cbd5e1;
+    }
+
+    .slide {
+      display: none;
+      width: 1280px;
+      height: 720px;
+      background: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+      position: relative;
+      overflow: hidden;
+      flex-direction: column;
+    }
+    .slide.active { display: flex; }
+
+    /* 슬라이드 좌측 액센트 바 */
+    .slide-accent-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 6px;
+      height: 100%;
+      background: #6366f1;
+    }
+
+    /* 슬라이드 상단 헤더 */
+    .slide-header {
+      padding: 36px 64px 20px 70px;
+      border-bottom: 1px solid #f1f5f9;
+      flex-shrink: 0;
+    }
+    .slide-section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eef2ff;
+      color: #6366f1;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .slide-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+    .slide-title-bar {
+      width: 40px;
+      height: 3px;
+      background: #6366f1;
+      border-radius: 2px;
+      margin-top: 10px;
+    }
+
+    /* 슬라이드 본문 */
+    .slide-body {
+      flex: 1;
+      padding: 24px 64px 24px 70px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 슬라이드 푸터 */
+    .slide-footer {
+      padding: 10px 64px 10px 70px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .slide-footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .slide-footer-brand span { color: #6366f1; }
+    .slide-page {
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* 카드 컴포넌트 */
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 16px 20px;
+    }
+    .card-accent {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #6366f1;
+      border-radius: 10px;
+      padding: 16px 20px;
+    }
+    .card-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 8px;
+    }
+
+    /* 네비게이션 */
+    .nav {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 100;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 8px 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    .nav button {
+      background: #f1f5f9;
+      border: none;
+      color: #334155;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .nav button:hover { background: #6366f1; color: white; }
+    .nav-dots {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .dot.active { background: #6366f1; width: 18px; border-radius: 3px; }
+    .nav-counter {
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 600;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    /* 표지 슬라이드 전용 */
+    .cover-slide {
+      background: #ffffff;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 0 100px;
+    }
+    .cover-stripe {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 360px;
+      height: 100%;
+      background: linear-gradient(160deg, #6366f1 0%, #8b5cf6 100%);
+      clip-path: polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+
+    /* 코드 블록 */
+    .code-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 3px solid #6366f1;
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 11.5px;
+      color: #334155;
+      line-height: 1.8;
+      white-space: pre;
+    }
+
+    /* 흐름 단계 */
+    .step-dot {
+      width: 22px;
+      height: 22px;
+      background: #6366f1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-dot.done { background: #22c55e; }
+
+    /* PDF 출력 */
+    @media print {
+      @page {
+        size: 297mm 167mm;  /* A4 가로 비율에 맞춘 16:9 */
+        margin: 0;
+      }
+
+      html, body {
+        width: 297mm;
+        height: 167mm;
+        background: white !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+
+      .slide-container {
+        width: auto !important;
+        height: auto !important;
+        background: white !important;
+        display: block !important;
+        align-items: unset !important;
+        justify-content: unset !important;
+      }
+
+      /* 모든 슬라이드 표시 + 페이지 분리 */
+      .slide {
+        display: flex !important;
+        width: 297mm !important;
+        height: 167mm !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        page-break-after: always;
+        break-after: page;
+        overflow: hidden !important;
+      }
+
+      /* 마지막 슬라이드는 page-break 불필요 */
+      .slide:last-of-type {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+
+      /* 네비게이션 숨김 */
+      .nav { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="slide-container">
+
+<!-- ========== SLIDE 01: 표지 ========== -->
+<div class="slide cover-slide active">
+  <div class="slide-accent-bar"></div>
+  <div class="cover-stripe"></div>
+
+  <div style="position:relative;z-index:1;max-width:720px;">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;padding:5px 14px;margin-bottom:24px;">
+      <span style="color:#6366f1;font-size:12px;font-weight:700;">AI 프로덕트 기획자 과제전형</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <h1 style="font-size:52px;font-weight:900;color:#0f172a;line-height:1.1;">SuperSuit AI</h1>
+    </div>
+    <div style="width:56px;height:4px;background:#6366f1;border-radius:2px;margin-bottom:20px;"></div>
+    <p style="font-size:17px;color:#334155;line-height:1.75;max-width:520px;margin-bottom:40px;font-weight:500;">
+      게임 개발 조직의 집단 지식을 온톨로지로 축적하고,<br>AI로 누구나 접근할 수 있게 만드는 지식 관리 도구
+    </p>
+    <div style="display:flex;gap:32px;margin-bottom:28px;">
+      <div>
+        <div style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">제출자</div>
+        <div style="font-size:14px;color:#0f172a;font-weight:700;">이진욱</div>
+      </div>
+      <div style="width:1px;background:#e2e8f0;"></div>
+      <div>
+        <div style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">과제 주제</div>
+        <div style="font-size:14px;color:#0f172a;font-weight:700;">게임 아이디어 및 기획 정리</div>
+      </div>
+      <div style="width:1px;background:#e2e8f0;"></div>
+      <div>
+        <div style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">포지션</div>
+        <div style="font-size:14px;color:#0f172a;font-weight:700;">AI 프로덕트 기획자</div>
+      </div>
+      <div style="width:1px;background:#e2e8f0;"></div>
+      <div>
+        <div style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">제출일</div>
+        <div style="font-size:14px;color:#0f172a;font-weight:700;">2026. 04. 24</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <a href="https://github.com/jwlee07/supercent_assessment_prototype" target="_blank"
+         style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;
+                border:1.5px solid #cbd5e1;border-radius:8px;text-decoration:none;
+                background:#f8fafc;color:#475569;font-size:13px;font-weight:700;
+                transition:background 0.15s;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#1e293b">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.82-.26.82-.57
+                   0-.28-.01-1.02-.01-2C6 21.4 5.28 19.03 5.28 19.03c-.55-1.4-1.34-1.77-1.34-1.77
+                   -1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.3 3.5 1
+                   .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22
+                   -.13-.3-.53-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02.01 2.04.14 3 .4
+                   2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.25 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22
+                   0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22 0 1.6-.01 2.9-.01 3.29
+                   0 .32.21.69.82.57C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        github.com/jwlee07/supercent_assessment_prototype
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+      <a href="https://drive.google.com/drive/folders/1wMskBGn58jGBvQF_uwcNVuq5QZjjsCEf?usp=sharing" target="_blank"
+         style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;
+                border:1.5px solid #cbd5e1;border-radius:8px;text-decoration:none;
+                background:#f8fafc;color:#475569;font-size:13px;font-weight:700;
+                transition:background 0.15s;">
+        <svg width="16" height="16" viewBox="0 0 87.3 78">
+          <path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L27.5 53H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+          <path d="M43.65 25L29.9 1.2C28.55 2 27.4 3.1 26.6 4.5L1.2 48.5C.4 49.9 0 51.45 0 53h27.5z" fill="#00ac47"/>
+          <path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.85 11.5z" fill="#ea4335"/>
+          <path d="M43.65 25L57.4 1.2C56.05.4 54.5 0 52.9 0H34.4c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+          <path d="M59.8 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.4 4.5-1.2z" fill="#2684fc"/>
+          <path d="M73.4 26.5l-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3L43.65 25 59.8 53h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+        </svg>
+        데모 영상 (Google Drive)
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div style="position:absolute;bottom:20px;left:70px;">
+  </div>
+  <div style="position:absolute;bottom:20px;right:48px;">
+    <div style="font-size:11px;color:#94a3b8;font-weight:600;">1 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 02: 문제 정의 — 인터뷰 근거 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">① 문제 정의</div>
+    <div class="slide-title">실험의 결과는 개인 혹은 팀에게 남고, 조직은 처음부터 시작한다</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:12px;">
+    <!-- 핵심 메시지 배너 -->
+    <div style="background:#eef2ff;border:1px solid #c7d2fe;border-left:4px solid #6366f1;border-radius:10px;padding:14px 20px;flex-shrink:0;">
+      <div style="font-size:11px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">핵심 문제</div>
+      <p style="font-size:15px;font-weight:700;color:#0f172a;line-height:1.5;margin:0;">슈퍼센트는 빠르게 실험한다. 그러나 실험의 결과는 조직이 아닌 <span style="color:#6366f1;">개인 혹은 팀에만</span> 남는다.</p>
+      </div>
+    <!-- 인터뷰 사례 3컬럼 그리드 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;min-height:0;">
+      <div class="card" style="border-left:3px solid #e2e8f0;display:flex;flex-direction:column;gap:6px;">
+        <div style="font-size:11px;font-weight:700;color:#334155;">사례 1 — 바울 (Lead PD, Snake Clash! · Dinosaur Universe)</div>
+        <p style="font-size:12.5px;color:#475569;line-height:1.6;flex:1;">데이터 앞에서 다 같이 "이게 왜 이렇게 나왔지?"를 함께 고민하는 분위기이지만 <strong style="color:#1e293b;">생각보다 쉽지 않은 방식</strong>이라 말한다. 프로젝트 경험이 <strong style="color:#1e293b;">자연스럽게 공유되는 문화</strong>라 언급하지만, 이 공유는 구조적 시스템이 아닌 사람 간의 자연스러운 교류를 통해서 진행된다.</p>
+        <div style="font-size:11px;color:#94a3b8;font-weight:600;">→ 논의가 시스템이 아닌 사람에 의존해 축적되지 않는다</div>
+        <a href="https://medium.com/supercent-blog/%EC%8A%88-%EC%8A%A4-%EC%9D%B8%ED%84%B0%EB%B7%B0-play-bigger-edition-%EC%8A%88%ED%8D%BC%EC%84%BC%ED%8A%B8%EC%9D%98-%EA%B8%B0%ED%9A%8D%EB%AC%B8%ED%99%94-521d3d4ee0eb" target="_blank" style="font-size:10px;color:#a5b4fc;text-decoration:none;margin-top:2px;">출처: 슈-스 인터뷰 — Lead PD 바울님 ↗</a>
+      </div>
+      <div class="card" style="border-left:3px solid #e2e8f0;display:flex;flex-direction:column;gap:6px;">
+        <div style="font-size:11px;font-weight:700;color:#334155;">사례 2 — 네이선 (Game Designer, Dinosaur Universe 담당)</div>
+        <p style="font-size:12.5px;color:#475569;line-height:1.6;flex:1;">라이브옵스·FTUE 개선으로 "의미있는 성과"를 냈으며, <strong style="color:#1e293b;">"유저 행동 패턴·리텐션·수익 지표 분석이 기획자의 핵심 역량"</strong>이라 강조한다. 그러나 이 인사이트는 <strong style="color:#1e293b;">개인의 역량과 기억에 머물 뿐</strong>, 다음 기획자에게 넘어가는 구조가 없다.</p>
+        <div style="font-size:11px;color:#94a3b8;font-weight:600;">→ 인사이트가 개인 역량에 머물고 조직에 누적되지 않는다</div>
+        <a href="https://medium.com/supercent-blog/%EC%8A%88-%EC%8A%A4-%EC%9D%B8%ED%84%B0%EB%B7%B0-%EA%B2%8C%EC%9E%84-%EA%B8%B0%ED%9A%8D%EC%9E%90-%EB%84%A4%EC%9D%B4%EC%84%A0%EB%8B%98-06b3750edee3" target="_blank" style="font-size:10px;color:#a5b4fc;text-decoration:none;margin-top:2px;">출처: 슈-스 인터뷰 — 게임 기획자 네이선님 ↗</a>
+      </div>
+      <div class="card" style="border-left:3px solid #e2e8f0;display:flex;flex-direction:column;gap:6px;">
+        <div style="font-size:11px;font-weight:700;color:#334155;">사례 3 — 솔 (Game Designer, 현업 10년)</div>
+        <p style="font-size:12.5px;color:#475569;line-height:1.6;flex:1;">"코어한 플레이를 준비했다 처참하게 실패하고 잽싸게 롤백" — <strong style="color:#1e293b;">"이 실패들이 모두 중요한 자산"</strong>이며 "경험과 데이터가 다음 프로젝트의 자양분이 된다"고 말한다. 그러나 이 자양분이 팀 밖으로 전달되려면 <strong style="color:#1e293b;">"구두·문서 모두의 커뮤니케이션을 동원해야"</strong> 하므로, 비용이 높아 공유되지 않는 실패가 생긴다.</p>
+        <div style="font-size:11px;color:#94a3b8;font-weight:600;">→ 실패 자산이 개인에게 머문다</div>
+        <a href="https://medium.com/supercent-blog/%EC%8A%88-%EC%8A%A4-%EC%9D%B8%ED%84%B0%EB%B7%B0-%EA%B2%8C%EC%9E%84-%EA%B8%B0%ED%9A%8D%EC%9E%90-%EC%86%94%EB%8B%98-d55460332e54" target="_blank" style="font-size:10px;color:#a5b4fc;text-decoration:none;margin-top:2px;">출처: 슈-스 인터뷰 — 게임 기획자 솔님 ↗</a>
+      </div>
+    </div>
+    <!-- 하단 결론 바 -->
+    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 20px;flex-shrink:0;text-align:center;">
+      <p style="font-size:13px;color:#1e293b;line-height:1.7;margin:0;">
+        <strong>세 인터뷰에서 공통으로 확인된 패턴</strong> — 메카닉 실험 결과 · 가설 검증 · 지표 인사이트가 <strong style="color:#6366f1;">개인 혹은 팀의 기억과 분산된 문서에만 남아</strong> 조직 자산으로 이어지지 않는다.
+      </p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">2 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 03: 주요 불편 사항 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">① 문제 정의</div>
+    <div class="slide-title">왜 지식은 조직에 남지 못하는가 — 4가지 구조적 단절</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:14px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;min-height:0;">
+      <div class="card" style="border-left:3px solid #e2e8f0;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="background:#f1f5f9;color:#334155;font-size:11px;font-weight:700;padding:2px 8px;border-radius:3px;">A</span>
+          <div style="font-size:15px;font-weight:700;color:#0f172a;">지식 접근성 문제</div>
+          </div>
+        <p style="font-size:13px;color:#475569;line-height:1.7;">과거 게임들의 데이터와 논의 결과가 있지만, 다음 기획에 활용하려면 담당자에게 직접 묻거나 분산된 문서를 뒤져야 한다. 지식에 접근하는 커뮤니케이션 비용이 크다.</p>
+        </div>
+      <div class="card" style="border-left:3px solid #e2e8f0;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="background:#f1f5f9;color:#334155;font-size:11px;font-weight:700;padding:2px 8px;border-radius:3px;">B</span>
+          <div style="font-size:15px;font-weight:700;color:#0f172a;">지식 단절 문제</div>
+        </div>
+        <p style="font-size:13px;color:#475569;line-height:1.7;">회의에서 나온 인사이트, 가설, 결과가 체계적으로 기록되지 않아 회의 종료 후 부분 소실되고 기록하는 사람의 관점에 따라 다르게 이해된다.</p>
+      </div>
+        <div class="card" style="border-left:3px solid #e2e8f0;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="background:#f1f5f9;color:#334155;font-size:11px;font-weight:700;padding:2px 8px;border-radius:3px;">C</span>
+          <div style="font-size:15px;font-weight:700;color:#0f172a;">팀 간 데이터 사일로</div>
+        </div>
+        <p style="font-size:13px;color:#475569;line-height:1.7;">기획팀의 가설, 데이터팀의 지표, 마케팅팀의 캠페인 성과 등이 각자의 영역에 머물고 전사적으로 통합 해석되는 표준화된 구조가 없다.</p>
+        </div>
+        <div class="card" style="border-left:3px solid #e2e8f0;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="background:#f1f5f9;color:#334155;font-size:11px;font-weight:700;padding:2px 8px;border-radius:3px;">D</span>
+          <div style="font-size:15px;font-weight:700;color:#0f172a;">성공/실패 패턴 미활용</div>
+        </div>
+        <p style="font-size:13px;color:#475569;line-height:1.7;">과거 게임들의 성공 패턴과 실패 패턴이 조직 자산으로 축적되지 않아 신규 게임 기획 시 반복 실수 발생할 수 있다.</p>
+      </div>
+    </div>
+    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:8px;padding:12px 20px;flex-shrink:0;">
+      <p style="font-size:13px;color:#1e293b;text-align:center;">실험은 반복되고, 지식은 사라진다 — 도구의 문제가 아닌 <strong style="color:#6366f1;">구조의 문제</strong>다</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">3 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 04: 해결하려는 문제 — 핵심 문제 + 기술 선택 근거 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">① 문제 정의</div>
+    <div class="slide-title">구조의 문제에는 구조적 해결이 필요하다</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:14px;">
+
+    <!-- 1행: 문제의 본질 (풀너비) -->
+    <div class="card-accent" style="flex-shrink:0;padding:14px 18px;">
+      <div class="card-label" style="color:#6366f1;">문제의 본질</div>
+      <p style="font-size:14px;font-weight:700;color:#0f172a;line-height:1.5;margin-bottom:5px;">
+        지식은 만들어지지만 조직에 남지 않는다. 구조가 없기 때문이다.
+      </p>
+      <p style="font-size:12px;color:#475569;line-height:1.7;margin:0;">
+        도구(노션·슬랙)의 문제가 아니라, <strong style="color:#1e293b;">지식을 구조화하고 연결하는 시스템</strong>이 없는 것이 근본 원인이다.
+      </p>
+    </div>
+
+    <!-- 2행: 2컬럼 (flex:1) -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0;">
+
+      <!-- 왼쪽: 3가지 조건 -->
+      <div class="card" style="border-top:3px solid #e2e8f0;display:flex;flex-direction:column;gap:10px;padding:16px;">
+        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.07em;">해결이 충족해야 할 3가지 조건</div>
+        <div style="display:flex;flex-direction:column;gap:12px;flex:1;justify-content:center;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="font-size:11px;font-weight:700;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 8px;flex-shrink:0;margin-top:1px;">①</span>
+            <div style="font-size:12.5px;color:#334155;line-height:1.55;"><strong>구조화</strong> — 지식을 노드·관계로 축적해 맥락이 보존돼야 한다</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="font-size:11px;font-weight:700;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 8px;flex-shrink:0;margin-top:1px;">②</span>
+            <div style="font-size:12.5px;color:#334155;line-height:1.55;"><strong>접근성</strong> — 누구나 자연어로 조직 지식에 접근할 수 있어야 한다</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span style="font-size:11px;font-weight:700;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 8px;flex-shrink:0;margin-top:1px;">③</span>
+            <div style="font-size:12.5px;color:#334155;line-height:1.55;"><strong>연결성</strong> — 조직 전체에 지식이 연결되어 누구나 재활용할 수 있어야 한다</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 오른쪽: 대안 비교 -->
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.07em;padding-top:2px;">왜 온톨로지 + RAG인가? — 대안 비교</div>
+        <div class="card" style="display:grid;grid-template-columns:1fr 24px 1fr;gap:10px;align-items:center;padding:10px 14px;flex:1;">
+          <div>
+            <div style="font-size:11.5px;font-weight:700;color:#94a3b8;text-decoration:line-through;margin-bottom:3px;">노션 / Wiki</div>
+            <div style="font-size:11px;color:#94a3b8;line-height:1.5;">구조화 없음, AI 검색 불가, 관계 표현 불가</div>
+          </div>
+          <div style="font-size:14px;color:#cbd5e1;font-weight:700;text-align:center;">→</div>
+          <div>
+            <div style="font-size:11.5px;font-weight:700;color:#334155;margin-bottom:3px;">온톨로지</div>
+            <div style="font-size:11px;color:#334155;line-height:1.5;">노드-엣지로 관계 축적. 메카닉→가설→결과 맥락 보존</div>
+          </div>
+        </div>
+        <div class="card" style="display:grid;grid-template-columns:1fr 24px 1fr;gap:10px;align-items:center;padding:10px 14px;flex:1;">
+          <div>
+            <div style="font-size:11.5px;font-weight:700;color:#94a3b8;text-decoration:line-through;margin-bottom:3px;">슬랙 / 키워드 DB</div>
+            <div style="font-size:11px;color:#94a3b8;line-height:1.5;">키워드 매칭만 가능, 의미 파악 불가, 맥락 단절</div>
+          </div>
+          <div style="font-size:14px;color:#cbd5e1;font-weight:700;text-align:center;">→</div>
+          <div>
+            <div style="font-size:11.5px;font-weight:700;color:#334155;margin-bottom:3px;">pgvector (RAG)</div>
+            <div style="font-size:11px;color:#334155;line-height:1.5;">의미 기반 유사도 검색. "비슷한 메카닉" 자연어 질문 가능</div>
+          </div>
+        </div>
+        <div class="card" style="display:grid;grid-template-columns:1fr 24px 1fr;gap:10px;align-items:center;padding:10px 14px;flex:1;">
+          <div>
+            <div style="font-size:11.5px;font-weight:700;color:#94a3b8;text-decoration:line-through;margin-bottom:3px;">LLM 단독 연결</div>
+            <div style="font-size:11px;color:#94a3b8;line-height:1.5;">조직 데이터 없음, 할루시네이션, 일반 지식만 응답</div>
+          </div>
+          <div style="font-size:14px;color:#cbd5e1;font-weight:700;text-align:center;">→</div>
+          <div>
+            <div style="font-size:11.5px;font-weight:700;color:#334155;margin-bottom:3px;">LLM + RAG</div>
+            <div style="font-size:11px;color:#334155;line-height:1.5;">온톨로지 노드를 컨텍스트로 주입 → 조직 데이터 기반 응답</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3행: 결론 (풀너비) -->
+    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:8px;padding:12px 20px;flex-shrink:0;text-align:center;">
+      <p style="font-size:13px;color:#1e293b;line-height:1.7;margin:0;"><strong>온톨로지</strong>로 지식을 구조화하고, <strong>RAG</strong>로 누구나 자연어로 접근할 수 있게 만든다 — <strong style="color:#6366f1;">두 기술의 결합</strong>이 이 문제의 구조적 해결이다</p>
+    </div>
+
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">4 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 04: 해결 방법 — 제품 설명 + 핵심 기능 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">② 해결 방법</div>
+    <div class="slide-title">SuperSuit AI — 제품 설명 & 핵심 기능</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:14px;">
+
+    <!-- 1행: 제품 설명 풀너비 -->
+    <div class="card-accent" style="flex-shrink:0;">
+      <div class="card-label" style="color:#6366f1;">제품 설명</div>
+      <p style="font-size:13.5px;color:#1e293b;line-height:1.7;">AI가 구성원을 대체하는 것이 아니라, AI를 통해 <strong style="color:#6366f1;">한 명 한 명을 슈퍼히어로로 만들고</strong>, 조직의 집단 지식을 누구나 검색하고 활용할 수 있게 하는 AI 기반 지식 관리 도구</p>
+    </div>
+
+    <!-- 2행: 핵심 기능 4가지 가로 4열 -->
+    <div style="flex:1.5;min-height:0;display:flex;flex-direction:column;">
+      <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:7px;flex-shrink:0;">핵심 기능 4가지</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(0,1fr);gap:12px;flex:1;">
+        <div class="card" style="display:flex;flex-direction:column;gap:7px;padding:16px 14px;">
+          <span style="font-size:10px;font-weight:700;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 6px;align-self:flex-start;">01</span>
+          <div style="font-size:12.5px;font-weight:700;color:#0f172a;">다양한 데이터 업로드</div>
+          <div style="font-size:11px;color:#64748b;line-height:1.6;">음성 업로드 → STT · GPT 엔티티 추출 → 온톨로지 자동 축적 <span style="color:#6366f1;font-weight:600;">(v1)</span></div>
+          <div style="font-size:10px;color:#94a3b8;line-height:1.6;margin-top:auto;">v2 예정 — 지표 · 마케팅 성과 · 리서치 · A/B 테스트 결과</div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;gap:7px;padding:16px 14px;">
+          <span style="font-size:10px;font-weight:700;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 6px;align-self:flex-start;">02</span>
+          <div style="font-size:12.5px;font-weight:700;color:#0f172a;">온톨로지 그래프 시각화</div>
+          <div style="font-size:11px;color:#64748b;line-height:1.6;">메카닉 · 가설 · 결과 · 팀이 연결된 지식 그래프 인터랙티브 시각화</div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;gap:7px;padding:16px 14px;">
+          <span style="font-size:10px;font-weight:700;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 6px;align-self:flex-start;">03</span>
+          <div style="font-size:12.5px;font-weight:700;color:#0f172a;">자연어 LLM 질문</div>
+          <div style="font-size:11px;color:#64748b;line-height:1.6;">pgvector 의미 유사도 검색으로 관련 노드를 찾고 LLM이 근거와 함께 응답</div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;gap:7px;padding:16px 14px;">
+          <span style="font-size:10px;font-weight:700;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 6px;align-self:flex-start;">04</span>
+          <div style="font-size:12.5px;font-weight:700;color:#0f172a;">팀별 관리</div>
+          <div style="font-size:11px;color:#64748b;line-height:1.6;">기획 · 개발 · 아트 · 마케팅 · QA팀별 관여 게임과 회의 기록 필터링</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3행: AS-IS / TO-BE / 효과 3열 -->
+    <div style="flex:1;min-height:0;">
+      <div style="display:grid;grid-template-columns:1fr 16px 1fr 16px 1fr;gap:0;align-items:center;margin-bottom:7px;padding:0 2px;">
+        <div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;">AS-IS</div>
+        <div></div>
+        <div style="font-size:10px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.07em;">TO-BE</div>
+        <div></div>
+        <div style="font-size:10px;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:0.07em;">효과</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <!-- 행 1 -->
+        <div style="display:grid;grid-template-columns:1fr 16px 1fr 16px 1fr;gap:0;align-items:center;font-size:12.5px;">
+          <div style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:6px 10px;color:#64748b;">노션에 기록</div>
+          <span style="color:#cbd5e1;text-align:center;font-size:13px;">→</span>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:6px 10px;color:#334155;font-weight:600;">조직 공유 온톨로지 자동 축적</div>
+          <span style="color:#cbd5e1;text-align:center;font-size:13px;">✓</span>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:6px 10px;color:#166534;font-size:12px;">데이터 자사 플랫폼 귀속</div>
+        </div>
+        <!-- 행 2 -->
+        <div style="display:grid;grid-template-columns:1fr 16px 1fr 16px 1fr;gap:0;align-items:center;font-size:12.5px;">
+          <div style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:6px 10px;color:#64748b;">경험자를 찾아 직접 물어봐야 함</div>
+          <span style="color:#cbd5e1;text-align:center;font-size:13px;">→</span>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:6px 10px;color:#334155;font-weight:600;">LLM에게 자연어로 질문</div>
+          <span style="color:#cbd5e1;text-align:center;font-size:13px;">✓</span>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:6px 10px;color:#166534;font-size:12px;">커뮤니케이션 비용 절감</div>
+        </div>
+        <!-- 행 3 -->
+        <div style="display:grid;grid-template-columns:1fr 16px 1fr 16px 1fr;gap:0;align-items:center;font-size:12.5px;">
+          <div style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:6px 10px;color:#64748b;">팀별 분산 데이터</div>
+          <span style="color:#cbd5e1;text-align:center;font-size:13px;">→</span>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:6px 10px;color:#334155;font-weight:600;">게임 중심 통합 지식 그래프</div>
+          <span style="color:#cbd5e1;text-align:center;font-size:13px;">✓</span>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:6px 10px;color:#166534;font-size:12px;">데이터 사일로 해소</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">5 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 06: User Flow ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">② 해결 방법</div>
+    <div class="slide-title">사용자 이용 흐름 (User Flow)</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0 16px;">
+
+    <!-- 시나리오 A: 게임 등록 -->
+    <div style="display:flex;flex-direction:column;gap:0;">
+      <div style="font-size:10.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">시나리오 A — 게임 등록</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">사용자</div>
+        <div style="font-size:12.5px;font-weight:600;color:#0f172a;">[+ 새 게임] 클릭</div>
+      </div>
+      <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">입력</div>
+        <div style="font-size:12.5px;font-weight:600;color:#0f172a;">게임명 / 장르 / 설명 입력</div>
+      </div>
+      <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">저장</div>
+        <div style="font-size:12.5px;font-weight:600;color:#0f172a;">게임 레코드 생성</div>
+      </div>
+      <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
+      <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#6366f1;margin-bottom:3px;">결과</div>
+        <div style="font-size:12.5px;font-weight:700;color:#6366f1;">온톨로지 루트 노드 등록</div>
+      </div>
+    </div>
+
+    <!-- 구분선 -->
+    <div style="background:#e2e8f0;margin-top:28px;"></div>
+
+    <!-- 시나리오 B: 데이터 업로드 -->
+    <div style="display:flex;flex-direction:column;gap:0;">
+      <div style="font-size:10.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">시나리오 B — 데이터 업로드</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">사용자</div>
+        <div style="font-size:12.5px;font-weight:600;color:#0f172a;">게임 선택 + 파일 업로드</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:3px;">회의 음성 (v1 구현)</div>
+      </div>
+      <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">STT</div>
+        <div style="font-size:12.5px;font-weight:600;color:#0f172a;">CLOVA Speech</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:3px;">음성 → 텍스트</div>
+      </div>
+      <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">AI 추출</div>
+        <div style="font-size:12.5px;font-weight:600;color:#0f172a;">gpt-5.4-mini</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:3px;">엔티티 추출 (노드/엣지)</div>
+      </div>
+      <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">임베딩</div>
+        <div style="font-size:12.5px;font-weight:600;color:#0f172a;">text-embedding-3-small</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:3px;">벡터 → pgvector 저장</div>
+      </div>
+      <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
+      <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#6366f1;margin-bottom:3px;">결과</div>
+        <div style="font-size:12.5px;font-weight:700;color:#6366f1;">온톨로지 그래프 갱신</div>
+      </div>
+    </div>
+
+    <!-- 구분선 -->
+    <div style="background:#e2e8f0;margin-top:28px;"></div>
+
+    <!-- 시나리오 C: 자연어 질문 -->
+    <div style="display:flex;flex-direction:column;gap:0;">
+      <div style="font-size:10.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">시나리오 C — 자연어 질문 → LLM 인사이트</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">사용자</div>
+        <div style="font-size:12.5px;font-weight:600;color:#0f172a;">자연어 질문 입력</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:3px;">"Snake Clash! 메카닉 성공 사례"</div>
+      </div>
+      <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">임베딩</div>
+        <div style="font-size:12.5px;font-weight:600;color:#0f172a;">text-embedding-3-small</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:3px;">질문 → 쿼리 벡터</div>
+      </div>
+      <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">검색</div>
+        <div style="font-size:12.5px;font-weight:600;color:#0f172a;">pgvector 유사도 검색</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:3px;">코사인 유사도 Top-10</div>
+      </div>
+      <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:3px;">LLM</div>
+        <div style="font-size:12.5px;font-weight:600;color:#0f172a;">gpt-5.4-mini (RAG)</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:3px;">컨텍스트 기반 답변 생성</div>
+      </div>
+      <div style="text-align:center;color:#6366f1;font-size:18px;line-height:1.8;">↓</div>
+      <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;text-align:center;">
+        <div style="font-size:10px;color:#6366f1;margin-bottom:3px;">결과</div>
+        <div style="font-size:12.5px;font-weight:700;color:#6366f1;">인사이트 + 참조 노드 표시</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">6 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 07: 시스템 구조도 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">② 해결 방법</div>
+    <div class="slide-title">시스템 구조도</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:12px;">
+
+    <!-- 레이어 1: 사용자 (Presentation) -->
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.07em;">Presentation Layer</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#0f172a;margin-bottom:2px;">게임 목록 / 상세</div>
+          <div style="font-size:10px;color:#94a3b8;">Django Template</div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#0f172a;margin-bottom:2px;">데이터 업로드</div>
+          <div style="font-size:10px;color:#94a3b8;">Django Template</div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#0f172a;margin-bottom:2px;">온톨로지 시각화</div>
+          <div style="font-size:10px;color:#94a3b8;">vis.js Network</div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#0f172a;margin-bottom:2px;">LLM 질문 채팅</div>
+          <div style="font-size:10px;color:#94a3b8;">Django Template</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 화살표 -->
+    <div style="text-align:center;font-size:11px;color:#94a3b8;letter-spacing:0.05em;">↕ HTTP / JSON</div>
+
+    <!-- 레이어 2: 백엔드 (Application) -->
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.07em;">Application Layer — Django 5.2</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+        <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;">
+          <div style="font-size:11px;font-weight:700;color:#4338ca;margin-bottom:4px;">views.py</div>
+          <div style="font-size:10px;color:#475569;line-height:1.6;">게임·팀 CRUD<br>음성 업로드 처리<br>온톨로지 조회<br>LLM 질문 응답</div>
+        </div>
+        <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;">
+          <div style="font-size:11px;font-weight:700;color:#4338ca;margin-bottom:4px;">models.py</div>
+          <div style="font-size:10px;color:#475569;line-height:1.6;">Game · Team · Meeting<br>Mechanic · Hypothesis<br>Result · OntologyNode<br>ORM → PostgreSQL</div>
+        </div>
+        <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;">
+          <div style="font-size:11px;font-weight:700;color:#4338ca;margin-bottom:4px;">gpt_service.py</div>
+          <div style="font-size:10px;color:#475569;line-height:1.6;">엔티티 추출 (Function Calling)<br>텍스트 임베딩 생성<br>RAG 기반 LLM 응답</div>
+        </div>
+        <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;">
+          <div style="font-size:11px;font-weight:700;color:#4338ca;margin-bottom:4px;">ontology_service.py</div>
+          <div style="font-size:10px;color:#475569;line-height:1.6;">노드·엣지 DB 저장<br>그래프 데이터 조회<br>벡터 유사도 검색</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 화살표 -->
+    <div style="text-align:center;font-size:11px;color:#94a3b8;letter-spacing:0.05em;">↕ API 호출 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↕ SQL + pgvector</div>
+
+    <!-- 레이어 3: 외부 API + DB -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+      <!-- 외부 API -->
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.07em;">External API</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+          <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:8px 10px;text-align:center;">
+            <div style="font-size:10.5px;font-weight:700;color:#7c3aed;margin-bottom:2px;">gpt-5.4-mini</div>
+            <div style="font-size:9.5px;color:#94a3b8;">엔티티 추출<br>LLM 응답</div>
+          </div>
+          <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:8px 10px;text-align:center;">
+            <div style="font-size:10.5px;font-weight:700;color:#7c3aed;margin-bottom:2px;">text-embedding<br>-3-small</div>
+            <div style="font-size:9.5px;color:#94a3b8;">1536차원<br>벡터 생성</div>
+          </div>
+          <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:8px 10px;text-align:center;">
+            <div style="font-size:10.5px;font-weight:700;color:#7c3aed;margin-bottom:2px;">CLOVA Speech</div>
+            <div style="font-size:9.5px;color:#94a3b8;">음성 → 텍스트<br>(STT)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 데이터 저장소 -->
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.07em;">Data Layer</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:8px 12px;text-align:center;">
+            <div style="font-size:10.5px;font-weight:700;color:#15803d;margin-bottom:2px;">PostgreSQL</div>
+            <div style="font-size:9.5px;color:#94a3b8;">게임·팀·메카닉<br>가설·결과 노드</div>
+          </div>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:8px 12px;text-align:center;">
+            <div style="font-size:10.5px;font-weight:700;color:#15803d;margin-bottom:2px;">pgvector</div>
+            <div style="font-size:9.5px;color:#94a3b8;">1536차원 임베딩<br>코사인 유사도 검색</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">7 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 07: KPI & 기대 효과 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">② 해결 방법</div>
+    <div class="slide-title">기대 효과 & 성과 지표 (KPI)</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:10px;">
+    <!-- 깔때기 레이블 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="background:#f1f5f9;color:#64748b;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;">① 투입</span>
+        <span style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;">Input</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="background:#f1f5f9;color:#64748b;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;">② 행동 변화</span>
+        <span style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;">Behavior</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="background:#f1f5f9;color:#64748b;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;">③ 비즈니스 임팩트</span>
+        <span style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.07em;">Outcome</span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex:1;min-height:0;">
+
+    <!-- ① 투입 지표 -->
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">온톨로지 축적량</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">월간 신규 노드 수<br><strong style="color:#6366f1;">월 50개 이상</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">자동 측정 — Mechanic · Hypothesis · Result 레코드 주간 집계</div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">도구 활성도</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">팀별 주간 LLM 질문 횟수<br><strong style="color:#6366f1;">팀당 주 10회 이상</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">자동 측정 — /ask API 호출 횟수·응답 시간 DB 자동 기록</div>
+      </div>
+    </div>
+
+    <!-- ② 행동 변화 지표 -->
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">지식 재사용률</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">업로드 노드가 LLM 답변에 인용된 비율<br><strong style="color:#6366f1;">30% 이상</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">자동 측정 — 답변 생성 시 참조 노드 ID 로깅</div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">중복 경고 수락률</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">"유사 실험 존재" 알림 후 업로드 취소 비율<br><strong style="color:#6366f1;">경고 발생 건의 40% 이상</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">자동 측정 — pgvector 유사도 경고 발생 · 취소 이벤트 로깅</div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">질문 → 기획 반영률</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">LLM 답변을 기획 문서에 인용한 횟수<br><strong style="color:#6366f1;">월 20건 이상</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">수동 추적 — 기획 문서 내 SuperSuit 답변 링크 삽입 수</div>
+      </div>
+    </div>
+
+    <!-- ③ 비즈니스 임팩트 -->
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">정보 탐색 시간 감소</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">원하는 정보를 찾는 데 걸린 시간<br><strong style="color:#6366f1;">분기 설문 Before/After 비교</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">Before: 담당자 문의·문서 탐색 평균 소요 시간 / After: LLM 질문 해결 시간</div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">온보딩 기간 단축</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">신규 기획자 → 첫 독립 기획서 제출까지 기간<br><strong style="color:#6366f1;">Before/After 비교</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">코호트 비교 — 도입 전후 신규 입사자 기준</div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:12.5px;font-weight:700;color:#0f172a;">NPS 월간 측정</div>
+        <div style="font-size:11.5px;color:#64748b;line-height:1.5;">지식 접근성 만족도<br><strong style="color:#6366f1;">NPS 40 이상 목표</strong></div>
+        <div style="font-size:10px;color:#94a3b8;">월간 인앱 설문 — "동료에게 추천하겠습니까?" 0–10점</div>
+      </div>
+    </div>
+
+    </div><!-- /3컬럼 그리드 -->
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">8 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 06: AI 도구 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">③ 사용할 AI 도구</div>
+    <div class="slide-title">활용 AI 모델 및 도구</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:12px;">
+    <p style="font-size:13px;color:#334155;line-height:1.5;flex-shrink:0;">문제 해결에 필요한 4가지 AI 도구 — 각 역할과 선택 이유</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:18px;align-content:start;flex:1;min-height:0;">
+    <div class="card" style="display:flex;flex-direction:column;gap:8px;height:100%;">
+      <div style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:4px;">STT</div>
+      <div style="font-size:14px;font-weight:700;color:#0f172a;">CLOVA Speech</div>
+      <div style="font-size:11px;font-weight:600;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 8px;display:inline-block;">Naver Cloud</div>
+      <div class="card-label" style="margin-top:4px;">역할</div>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;flex:1;">음성 파일(mp3, wav) → 한국어 텍스트 변환 (STT)</p>
+      <div class="card-label">선택 이유</div>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;">한국어 특화 STT. 게임 개발 전문 용어(D1, ARPU, 메카닉 등) 인식에 유리한 편이다</p>
+      <div style="background:#f1f5f9;border-radius:6px;padding:6px 10px;font-size:12px;color:#334155;font-weight:600;margin-top:auto;">월 4시간 무료</div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:8px;height:100%;">
+      <div style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:4px;">LLM</div>
+      <div style="font-size:14px;font-weight:700;color:#0f172a;">gpt-5.4-mini</div>
+      <div style="font-size:11px;font-weight:600;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 8px;display:inline-block;">OpenAI</div>
+      <div class="card-label" style="margin-top:4px;">역할</div>
+      <div style="font-size:11.5px;color:#475569;line-height:1.6;flex:1;">① 텍스트 → 온톨로지 엔티티 추출 (Function Calling)<br>② 자연어 질문 → 온톨로지 컨텍스트 기반 응답</div>
+      <div class="card-label">선택 이유</div>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;">최신 플래그십 미니 모델. 한국어 처리 + JSON 구조화 오류가 적었다</p>
+      <div style="background:#f1f5f9;border-radius:6px;padding:6px 10px;font-size:12px;color:#334155;font-weight:600;margin-top:auto;">$0.75 / 1M input · $4.50 / 1M output</div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:8px;height:100%;">
+      <div style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:4px;">Embedding</div>
+      <div style="font-size:14px;font-weight:700;color:#0f172a;">text-embedding-3-small</div>
+      <div style="font-size:11px;font-weight:600;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 8px;display:inline-block;">OpenAI</div>
+      <div class="card-label" style="margin-top:4px;">역할</div>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;flex:1;">각 온톨로지 노드 텍스트 → 1536차원 벡터 변환. pgvector에 저장 후 의미 기반 유사도 검색</p>
+      <div class="card-label">선택 이유</div>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;">비용 대비 성능이 좋은 편이다. 한국어 임베딩 품질 우수</p>
+      <div style="background:#f1f5f9;border-radius:6px;padding:6px 10px;font-size:12px;color:#334155;font-weight:600;margin-top:auto;">$0.02 / 1M tokens</div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:8px;height:100%;">
+      <div style="font-size:11px;font-weight:700;color:#6366f1;background:#eef2ff;border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:4px;">AI 개발 환경</div>
+      <div style="font-size:14px;font-weight:700;color:#0f172a;">Cursor Subagents</div>
+      <div style="font-size:11px;font-weight:600;color:#334155;background:#f1f5f9;border-radius:4px;padding:2px 8px;display:inline-block;">Anysphere</div>
+      <div class="card-label" style="margin-top:4px;">역할</div>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;flex:1;">PM · Designer · Developer Agent를 순차 실행하여 기획 산출물 → UI 목업 → Django 구현까지 AI 협업 개발 파이프라인 구성</p>
+      <div class="card-label">선택 이유</div>
+      <p style="font-size:11.5px;color:#475569;line-height:1.6;">역할별 컨텍스트 분리로 각 Agent가 이전 산출물을 참조하며 단계적으로 구현 — 단순 코딩 보조가 아닌 AI 협업 방법론</p>
+      <div style="background:#f1f5f9;border-radius:6px;padding:6px 10px;font-size:12px;color:#334155;font-weight:600;margin-top:auto;">PM → Designer → Developer 순차 실행</div>
+    </div>
+    </div><!-- /4컬럼 그리드 -->
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">9 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 07: 프로토타이핑 계획 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">④ 프로토타이핑 계획</div>
+    <div class="slide-title">프로토타입 목적 · 구현 범위 · 도구 · 입출력</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:12px;">
+
+    <!-- 1행: 프로토타입 목적 풀너비 -->
+    <div class="card-accent" style="flex-shrink:0;">
+        <div class="card-label" style="color:#6366f1;">프로토타입 목적</div>
+        <p style="font-size:13px;color:#1e293b;line-height:1.7;">회의 음성과 게임 데이터가 자동으로 온톨로지에 쌓이고, LLM으로 과거 지식을 즉시 검색할 수 있다는 것을 <strong style="color:#6366f1;">실제 동작하는 Django 앱</strong>으로 검증</p>
+      </div>
+
+    <!-- 2행: 2컬럼 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0;">
+
+      <!-- 왼쪽: 구현 범위 + 사용 도구 -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="card">
+          <div class="card-label">구현 범위 & v2 확장 로드맵</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;"><span style="color:#22c55e;font-weight:700;flex-shrink:0;">✓</span><span style="color:#334155;"><strong>음성 업로드 풀 파이프라인</strong> — CLOVA Speech STT → gpt-5.4-mini 엔티티 추출 → pgvector 저장</span></div>
+          <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;"><span style="color:#22c55e;font-weight:700;flex-shrink:0;">✓</span><span style="color:#334155;">vis.js 인터랙티브 온톨로지 그래프</span></div>
+          <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;"><span style="color:#22c55e;font-weight:700;flex-shrink:0;">✓</span><span style="color:#334155;">LLM 자연어 질문 + 참조 노드 출처 표시</span></div>
+          <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;"><span style="color:#22c55e;font-weight:700;flex-shrink:0;">✓</span><span style="color:#334155;">Snake Clash!, Dinosaur Universe 샘플 데이터</span></div>
+            <div style="display:flex;align-items:flex-start;gap:7px;font-size:13px;"><span style="color:#94a3b8;font-weight:700;flex-shrink:0;">v2</span><span style="color:#94a3b8;">지표·마케팅·리서치·A/B 테스트 업로드 (v2 로드맵)</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">사용 도구</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+          <div style="background:#f8fafc;border-radius:6px;padding:7px 10px;"><div style="color:#94a3b8;font-size:10px;margin-bottom:2px;">백엔드</div><div style="color:#0f172a;font-size:12px;font-weight:700;">Django 5.2 LTS</div></div>
+          <div style="background:#f8fafc;border-radius:6px;padding:7px 10px;"><div style="color:#94a3b8;font-size:10px;margin-bottom:2px;">데이터베이스</div><div style="color:#0f172a;font-size:12px;font-weight:700;">PostgreSQL + pgvector</div></div>
+          <div style="background:#f8fafc;border-radius:6px;padding:7px 10px;"><div style="color:#94a3b8;font-size:10px;margin-bottom:2px;">인프라</div><div style="color:#0f172a;font-size:12px;font-weight:700;">Docker</div></div>
+          <div style="background:#f8fafc;border-radius:6px;padding:7px 10px;"><div style="color:#94a3b8;font-size:10px;margin-bottom:2px;">그래프 시각화</div><div style="color:#0f172a;font-size:12px;font-weight:700;">vis.js + Tailwind</div></div>
+        </div>
+      </div>
+    </div>
+
+      <!-- 오른쪽: 입력 데이터 및 출력 방식 -->
+    <div class="card">
+      <div class="card-label">입력 데이터 및 출력 방식</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+        <!-- 음성: 풀 파이프라인 강조 -->
+        <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;">
+          <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:5px;padding:7px 10px;">
+            <div style="color:#6366f1;font-weight:700;">음성 파일 (mp3/wav/m4a)</div>
+            <div style="font-size:10px;color:#6366f1;margin-top:2px;">CLOVA STT → gpt-5.4-mini 엔티티 추출</div>
+          </div>
+            <span style="color:#94a3b8;text-align:center;font-weight:700;">→</span>
+          <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:5px;padding:7px 10px;color:#6366f1;font-weight:600;">Meeting · Mechanic · Hypothesis 노드</div>
+        </div>
+          <!-- 이하 4개: v2 로드맵 -->
+          <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.7;">
+          <div style="background:#f1f5f9;border-radius:5px;padding:7px 10px;">
+            <div style="color:#94a3b8;">게임 지표 (CSV/JSON)</div>
+              <div style="font-size:10px;color:#94a3b8;margin-top:2px;">v2 로드맵</div>
+          </div>
+          <span style="color:#cbd5e1;text-align:center;font-weight:700;">→</span>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;padding:7px 10px;color:#94a3b8;">Metric 노드</div>
+        </div>
+          <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.7;">
+          <div style="background:#f1f5f9;border-radius:5px;padding:7px 10px;">
+            <div style="color:#94a3b8;">마케팅 성과 (CSV)</div>
+              <div style="font-size:10px;color:#94a3b8;margin-top:2px;">v2 로드맵</div>
+          </div>
+          <span style="color:#cbd5e1;text-align:center;font-weight:700;">→</span>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;padding:7px 10px;color:#94a3b8;">Campaign 노드</div>
+        </div>
+          <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.7;">
+          <div style="background:#f1f5f9;border-radius:5px;padding:7px 10px;">
+            <div style="color:#94a3b8;">경쟁 리서치 (PDF/TXT)</div>
+              <div style="font-size:10px;color:#94a3b8;margin-top:2px;">v2 로드맵</div>
+          </div>
+          <span style="color:#cbd5e1;text-align:center;font-weight:700;">→</span>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;padding:7px 10px;color:#94a3b8;">CompetitorGame 노드</div>
+        </div>
+          <div style="display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;font-size:12.5px;opacity:0.7;">
+          <div style="background:#f1f5f9;border-radius:5px;padding:7px 10px;">
+            <div style="color:#94a3b8;">A/B 테스트 결과 (CSV)</div>
+              <div style="font-size:10px;color:#94a3b8;margin-top:2px;">v2 로드맵</div>
+          </div>
+          <span style="color:#cbd5e1;text-align:center;font-weight:700;">→</span>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;padding:7px 10px;color:#94a3b8;">ABTest + Hypothesis 업데이트</div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">10 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 11: 프로토타이핑 방법 · 바이브 코딩 지시 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">⑤⑥ 프로토타이핑 방법 · 바이브 코딩 지시</div>
+    <div class="slide-title">Cursor Subagents 방법론 — 실제 AI 지시 내용</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:flex;flex-direction:column;gap:10px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;min-height:0;">
+
+      <!-- Step 1 -->
+      <div style="border:1px solid #e2e8f0;border-top:3px solid #e2e8f0;border-radius:10px;padding:12px 14px;background:#ffffff;display:flex;flex-direction:column;gap:7px;min-height:0;overflow:hidden;">
+        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;">Step 1</div>
+        <div style="font-size:13px;font-weight:700;color:#0f172a;">Product Manager Agent</div>
+        <div style="font-size:10.5px;color:#475569;line-height:1.4;">제품 기획자 — 기능 명세 · DB 스키마 · API 명세 작성</div>
+        <div class="code-box" style="flex:1;font-size:10px;line-height:1.7;overflow:hidden;">당신은 SuperSuit AI의
+제품 기획자(PM)입니다.
+
+참조: Product_Overview.md
+     Problem_Definition.md
+     User_Flow.md
+     Ontology_Design.md
+
+산출물:
+① Feature_Spec.md (6개 화면)
+② Db_Schema.md (11개 노드)
+③ Api_Spec.md (14개 엔드포인트)</div>
+        <div style="font-size:10px;color:#475569;">Feature_Spec.md · Db_Schema.md · Api_Spec.md</div>
+        <code style="background:#f1f5f9;color:#334155;font-size:10px;padding:3px 8px;border-radius:4px;display:block;">전문 → .cursor/agents/product-manager-agent.md</code>
+      </div>
+
+      <!-- Step 2 -->
+      <div style="border:1px solid #e2e8f0;border-top:3px solid #e2e8f0;border-radius:10px;padding:12px 14px;background:#ffffff;display:flex;flex-direction:column;gap:7px;min-height:0;overflow:hidden;">
+        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;">Step 2</div>
+        <div style="font-size:13px;font-weight:700;color:#0f172a;">Product Designer Agent</div>
+        <div style="font-size:10.5px;color:#475569;line-height:1.4;">제품 디자이너 — HTML/CSS 목업 6개 · UI 명세 작성</div>
+        <div class="code-box" style="flex:1;font-size:10px;line-height:1.7;overflow:hidden;">당신은 SuperSuit AI의
+제품 디자이너입니다.
+
+참조: Feature_Spec.md
+     Ontology_Design.md
+     User_Flow.md
+
+산출물:
+① Ui_Spec.md (디자인 시스템)
+② 01~06.html (6개 목업)
+
+기술: Tailwind CDN · vis.js CDN
+다크 사이드바 · 최소 1280px</div>
+        <div style="font-size:10px;color:#475569;">Ui_Spec.md · 01~06.html · vis.js 그래프</div>
+        <code style="background:#f1f5f9;color:#334155;font-size:10px;padding:3px 8px;border-radius:4px;display:block;">전문 → .cursor/agents/product-designer-agent.md</code>
+      </div>
+
+      <!-- Step 3 -->
+      <div style="border:1px solid #e2e8f0;border-top:3px solid #e2e8f0;border-radius:10px;padding:12px 14px;background:#ffffff;display:flex;flex-direction:column;gap:7px;min-height:0;overflow:hidden;">
+        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;">Step 3</div>
+        <div style="font-size:13px;font-weight:700;color:#0f172a;">Fullstack Developer Agent</div>
+        <div style="font-size:10.5px;color:#475569;line-height:1.4;">풀스택 개발자 — Django 프로토타입 전체 구현</div>
+        <div class="code-box" style="flex:1;font-size:10px;line-height:1.7;overflow:hidden;">당신은 SuperSuit AI의
+풀스택 개발자입니다.
+
+참조: docs/ 전체
+
+구현:
+① models.py (11개 노드)
+② clova_service.py (STT)
+③ gpt_service.py (LLM·임베딩)
+④ 6개 Django 템플릿
+⑤ fixtures/sample_data.json
+
+기술: Django 5.2 + pgvector
+Docker + gpt-5.4-mini</div>
+        <div style="font-size:10px;color:#475569;">Django 5.2 + pgvector · CLOVA STT + gpt-5.4-mini · 6개 템플릿</div>
+        <code style="background:#f1f5f9;color:#334155;font-size:10px;padding:3px 8px;border-radius:4px;display:block;">전문 → .cursor/agents/fullstack-developer-agent.md</code>
+      </div>
+
+    </div>
+    <!-- 하단 결론 바 -->
+    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 20px;flex-shrink:0;text-align:center;">
+      <p style="font-size:13px;color:#1e293b;line-height:1.7;margin:0;">각 Agent는 이전 Agent의 산출물을 참조 문서로 활용 — <strong style="color:#6366f1;">PM → Designer → Developer 순차 실행</strong></p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">11 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 13: 화면 설계 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div class="slide-header">
+    <div class="slide-section-tag">화면 UI</div>
+    <div class="slide-title">6개 화면 UI 설계</div>
+    <div class="slide-title-bar"></div>
+  </div>
+  <div class="slide-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:10px 14px;">
+    <!-- row 1 -->
+    <div style="display:flex;flex-direction:column;gap:5px;min-height:0;">
+      <div style="border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;flex:1;min-height:0;background:#f8fafc;">
+        <img src="assets/01_game_list.png" alt="게임 목록" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:11.5px;font-weight:700;color:#0f172a;">01. 게임 목록</div>
+        <code style="font-size:9.5px;color:#6366f1;">game_list</code>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:5px;min-height:0;">
+      <div style="border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;flex:1;min-height:0;background:#f8fafc;">
+        <img src="assets/02_game_detail.png" alt="게임 상세" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:11.5px;font-weight:700;color:#0f172a;">02. 게임 상세</div>
+        <code style="font-size:9.5px;color:#6366f1;">game_detail</code>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:5px;min-height:0;">
+      <div style="border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;flex:1;min-height:0;background:#f8fafc;">
+        <img src="assets/03_ontology.png" alt="온톨로지 그래프" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:11.5px;font-weight:700;color:#0f172a;">03. 온톨로지 그래프</div>
+        <code style="font-size:9.5px;color:#6366f1;">ontology</code>
+      </div>
+    </div>
+    <!-- row 2 -->
+    <div style="display:flex;flex-direction:column;gap:5px;min-height:0;">
+      <div style="border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;flex:1;min-height:0;background:#f8fafc;">
+        <img src="assets/04_llm.png" alt="LLM 질문" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:11.5px;font-weight:700;color:#0f172a;">04. LLM 질문</div>
+        <code style="font-size:9.5px;color:#6366f1;">ask</code>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:5px;min-height:0;">
+      <div style="border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;flex:1;min-height:0;background:#f8fafc;">
+        <img src="assets/05_team.png" alt="팀 관리" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:11.5px;font-weight:700;color:#0f172a;">05. 팀 관리</div>
+        <code style="font-size:9.5px;color:#6366f1;">teams</code>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:5px;min-height:0;">
+      <div style="border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;flex:1;min-height:0;background:#f8fafc;">
+        <img src="assets/06_upload.png" alt="업로드" style="width:100%;height:100%;object-fit:cover;object-position:top left;display:block;">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:11.5px;font-weight:700;color:#0f172a;">06. 업로드</div>
+        <code style="font-size:9.5px;color:#6366f1;">upload</code>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="slide-footer-brand"><span>SuperSuit AI</span></div>
+    <div class="slide-page">12 / 13</div>
+  </div>
+</div>
+
+<!-- ========== SLIDE 14: 마무리 ========== -->
+<div class="slide">
+  <div class="slide-accent-bar"></div>
+  <div style="position:absolute;right:0;top:0;width:320px;height:100%;background:linear-gradient(160deg,#6366f1,#8b5cf6);clip-path:polygon(20% 0%,100% 0%,100% 100%,0% 100%);"></div>
+
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:52px 64px 52px 70px;position:relative;z-index:1;">
+    <div style="max-width:600px;">
+      <h2 style="font-size:52px;font-weight:900;color:#0f172a;line-height:1.1;margin-bottom:16px;">감사합니다</h2>
+      <div style="width:48px;height:4px;background:#6366f1;border-radius:2px;margin-bottom:28px;"></div>
+      <div style="background:#ffffff;border:1px solid #e2e8f0;border-left:4px solid #6366f1;border-radius:10px;padding:16px 20px;">
+        <p style="font-size:13.5px;color:#1e293b;line-height:1.7;margin:0;">SuperSuit AI는 AI가 구성원을 대체하는 것이 아닌,<br><strong style="color:#6366f1;">모든 구성원을 슈퍼히어로로 만드는 아이언맨 수트</strong>입니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute;bottom:20px;left:70px;z-index:1;">
+  </div>
+  <div style="position:absolute;bottom:20px;right:48px;z-index:1;">
+    <div style="font-size:11px;color:#94a3b8;font-weight:600;">13 / 13</div>
+  </div>
+</div>
+
+</div><!-- /slide-container -->
+
+<!-- 네비게이션 -->
+<div class="nav">
+  <button onclick="prevSlide()">&#8592;</button>
+  <div class="nav-dots" id="dots"></div>
+  <button onclick="nextSlide()">&#8594;</button>
+  <span class="nav-counter" id="counter">1 / 13</span>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const counter = document.getElementById('counter');
+  const dotsEl = document.getElementById('dots');
+
+  // 도트 생성
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => showSlide(i);
+    dotsEl.appendChild(d);
+  }
+
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    counter.textContent = (current + 1) + ' / ' + total;
+  }
+
+  function nextSlide() { showSlide(current + 1); }
+  function prevSlide() { showSlide(current - 1); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
+  });
+</script>
+</body>
+</html>

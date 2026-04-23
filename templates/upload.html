@@ -1,0 +1,351 @@
+{% extends 'base.html' %}
+{% block title %}SuperSuit AI{% endblock %}
+
+{% block content %}
+<div class="p-8">
+  <h1 class="text-2xl font-bold text-slate-800 mb-8">새 데이터 업로드</h1>
+
+  <div class="max-w-2xl">
+
+    <!-- Step 1: 게임 선택 -->
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-5">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-6 h-6 bg-indigo-600 text-white rounded-full flex items-center justify-center text-xs font-bold">1</div>
+        <h2 class="font-semibold text-slate-700">게임 선택</h2>
+      </div>
+      <div class="flex flex-col gap-2">
+        {% for game in games %}
+        <label class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer">
+          <input type="radio" name="selected_game" value="{{ game.id }}" class="text-indigo-600">
+          <span class="text-sm text-slate-700">🎮 {{ game.name }}{% if game.genre %} <span class="text-slate-400">({{ game.genre }})</span>{% endif %}</span>
+        </label>
+        {% empty %}
+        <p class="text-sm text-slate-400 py-2">등록된 게임이 없습니다. 아래에서 새 게임을 추가하세요.</p>
+        {% endfor %}
+        <label class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 cursor-pointer border-2 border-dashed border-slate-200">
+          <input type="radio" name="selected_game" value="new" class="text-indigo-600">
+          <span class="text-sm text-slate-500">+ 새 게임 추가</span>
+        </label>
+      </div>
+      <div id="new-game-form" class="hidden mt-4 p-4 bg-slate-50 rounded-lg">
+        <input id="new-game-name" type="text" placeholder="게임명" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-2 focus:outline-none focus:border-indigo-400">
+        <input id="new-game-genre" type="text" placeholder="장르 (예: 하이퍼캐주얼)" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400">
+      </div>
+    </div>
+
+    <!-- Step 2: 유형 선택 -->
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-5">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-6 h-6 bg-indigo-600 text-white rounded-full flex items-center justify-center text-xs font-bold">2</div>
+        <h2 class="font-semibold text-slate-700">데이터 유형 선택</h2>
+      </div>
+      <div class="grid grid-cols-5 gap-3">
+        <div class="type-card border-2 border-indigo-300 bg-indigo-50 rounded-xl p-4 cursor-pointer text-center transition" onclick="selectType('audio', this)">
+          <div class="text-3xl mb-2">🎙️</div>
+          <div class="text-xs font-medium text-slate-700">회의 음성</div>
+        </div>
+        <div class="type-card border-2 border-slate-100 rounded-xl p-4 text-center opacity-40 cursor-not-allowed relative" title="v2 로드맵">
+          <div class="text-3xl mb-2">📊</div>
+          <div class="text-xs font-medium text-slate-400">게임 지표</div>
+          <div class="absolute top-1 right-1 text-[9px] font-bold text-amber-500 bg-amber-50 border border-amber-200 rounded px-1">v2</div>
+        </div>
+        <div class="type-card border-2 border-slate-100 rounded-xl p-4 text-center opacity-40 cursor-not-allowed relative" title="v2 로드맵">
+          <div class="text-3xl mb-2">📣</div>
+          <div class="text-xs font-medium text-slate-400">마케팅 성과</div>
+          <div class="absolute top-1 right-1 text-[9px] font-bold text-amber-500 bg-amber-50 border border-amber-200 rounded px-1">v2</div>
+        </div>
+        <div class="type-card border-2 border-slate-100 rounded-xl p-4 text-center opacity-40 cursor-not-allowed relative" title="v2 로드맵">
+          <div class="text-3xl mb-2">🔍</div>
+          <div class="text-xs font-medium text-slate-400">경쟁 리서치</div>
+          <div class="absolute top-1 right-1 text-[9px] font-bold text-amber-500 bg-amber-50 border border-amber-200 rounded px-1">v2</div>
+        </div>
+        <div class="type-card border-2 border-slate-100 rounded-xl p-4 text-center opacity-40 cursor-not-allowed relative" title="v2 로드맵">
+          <div class="text-3xl mb-2">🧪</div>
+          <div class="text-xs font-medium text-slate-400">A/B 테스트</div>
+          <div class="absolute top-1 right-1 text-[9px] font-bold text-amber-500 bg-amber-50 border border-amber-200 rounded px-1">v2</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: 폼 -->
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-5">
+      <div class="flex items-center gap-2 mb-5">
+        <div class="w-6 h-6 bg-indigo-600 text-white rounded-full flex items-center justify-center text-xs font-bold">3</div>
+        <h2 class="font-semibold text-slate-700">입력</h2>
+      </div>
+
+      <!-- 회의 음성 폼 -->
+      <div id="form-audio">
+        <div id="dropzone" class="border-2 border-dashed border-slate-300 rounded-xl p-10 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition mb-4"
+          ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+          <div class="text-4xl mb-2">🎙️</div>
+          <p class="text-slate-500 text-sm">음성 파일을 드래그하거나 클릭해서 업로드</p>
+          <p class="text-slate-400 text-xs mt-1">mp3, wav, m4a 지원 · 최대 100MB</p>
+          <input type="file" id="audio-file" accept=".mp3,.wav,.m4a,.webm" class="hidden" onchange="showFileName(this)">
+          <button type="button" onclick="document.getElementById('audio-file').click()" class="mt-3 px-4 py-1.5 border border-indigo-300 text-indigo-600 rounded-lg text-sm hover:bg-indigo-50">파일 선택</button>
+        </div>
+        <div id="file-name" class="hidden text-sm text-slate-600 mb-4 p-3 bg-green-50 rounded-lg border border-green-200"></div>
+
+        <div class="mb-4">
+          <label class="text-xs font-medium text-slate-600 mb-1 block">회의 날짜</label>
+          <input type="date" id="meeting-date" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm">
+        </div>
+
+        <div>
+          <label class="text-xs font-medium text-slate-600 mb-2 block">참여 팀 선택</label>
+          {% if teams %}
+          <div class="flex gap-3 flex-wrap">
+            {% for team in teams %}
+            <label class="flex items-center gap-1.5 cursor-pointer bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 hover:border-indigo-300 hover:bg-indigo-50 transition">
+              <input type="checkbox" name="upload_teams" value="{{ team.id }}" class="text-indigo-600">
+              <span class="text-sm text-slate-600">{{ team.name }}</span>
+            </label>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+            <p class="text-xs text-amber-700">등록된 팀이 없습니다. <a href="/teams/" class="underline font-medium">팀 관리</a>에서 먼저 팀을 추가하세요.</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- 마케팅 폼 -->
+      <div id="form-marketing" class="hidden">
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="text-xs font-medium text-slate-600 mb-1 block">캠페인명</label><input type="text" id="mkt-name" placeholder="예: Snake Q1 UA" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"></div>
+          <div>
+            <label class="text-xs font-medium text-slate-600 mb-1 block">채널</label>
+            <select id="mkt-channel" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm">
+              <option>Meta</option><option>Google</option><option>TikTok</option><option>AppLovin</option><option>Unity Ads</option><option>기타</option>
+            </select>
+          </div>
+          <div><label class="text-xs font-medium text-slate-600 mb-1 block">CPI ($)</label><input type="number" id="mkt-cpi" step="0.01" placeholder="0.80" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"></div>
+          <div><label class="text-xs font-medium text-slate-600 mb-1 block">ROAS</label><input type="number" id="mkt-roas" step="0.01" placeholder="3.20" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"></div>
+        </div>
+      </div>
+
+      <!-- 경쟁 리서치 폼 -->
+      <div id="form-research" class="hidden">
+        <div class="mb-4"><label class="text-xs font-medium text-slate-600 mb-1 block">경쟁 게임명</label><input type="text" id="res-competitor" placeholder="예: Snake.io" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"></div>
+        <label class="text-xs font-medium text-slate-600 mb-1 block">리서치 내용</label>
+        <textarea id="res-content" rows="6" placeholder="경쟁 게임 분석 내용을 입력하세요..." class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
+      </div>
+
+      <!-- A/B 테스트 폼 -->
+      <div id="form-abtest" class="hidden">
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div class="col-span-2"><label class="text-xs font-medium text-slate-600 mb-1 block">테스트명</label><input type="text" id="ab-name" placeholder="예: FTUE 길이 테스트" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"></div>
+          <div><label class="text-xs font-medium text-slate-600 mb-1 block">대조군</label><input type="text" id="ab-control" placeholder="기존 버전" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"></div>
+          <div><label class="text-xs font-medium text-slate-600 mb-1 block">실험군</label><input type="text" id="ab-variant" placeholder="새 버전" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"></div>
+          <div><label class="text-xs font-medium text-slate-600 mb-1 block">대조군 결과</label><input type="number" id="ab-control-val" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"></div>
+          <div><label class="text-xs font-medium text-slate-600 mb-1 block">실험군 결과</label><input type="number" id="ab-variant-val" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"></div>
+          <div>
+            <label class="text-xs font-medium text-slate-600 mb-1 block">결과</label>
+            <select id="ab-result" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm">
+              <option value="variant_win">실험군 우세</option>
+              <option value="control_win">대조군 우세</option>
+              <option value="neutral">차이 없음</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-slate-600 mb-1 block">연결 가설</label>
+            <select id="ab-hypothesis" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm">
+              <option value="">선택 안 함</option>
+              {% for hyp in hypotheses %}
+              <option value="{{ hyp.id }}">{{ hyp.content|truncatechars:50 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 게임 지표 폼 -->
+      <div id="form-metrics" class="hidden">
+        <p class="text-xs text-slate-500 mb-3">CSV 파일을 업로드하거나 아래에 직접 입력하세요</p>
+        <div class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center mb-4 hover:border-indigo-400 hover:bg-indigo-50 transition cursor-pointer" onclick="document.getElementById('metrics-file').click()">
+          <div class="text-3xl mb-1">📊</div>
+          <p class="text-sm text-slate-500">CSV/JSON 파일 업로드</p>
+          <input type="file" id="metrics-file" accept=".csv,.json" class="hidden">
+        </div>
+        <textarea id="metrics-text" rows="4" placeholder="또는 직접 입력: D1=42%, D7=18%, DAU=12000" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
+      </div>
+    </div>
+
+    <!-- 업로드 버튼 -->
+    <button onclick="startUpload()" class="w-full bg-indigo-600 text-white py-3.5 rounded-xl font-medium hover:bg-indigo-700 transition text-sm">
+      업로드 시작 →
+    </button>
+  </div>
+</div>
+
+<!-- 처리 중 모달 -->
+<div id="loading-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl">
+    <div class="text-5xl mb-4">⚡</div>
+    <h3 class="text-lg font-bold text-slate-800 mb-4">처리 중...</h3>
+    <div id="status-messages" class="flex flex-col gap-2 text-sm text-slate-500 mb-6 text-left"></div>
+    <div class="w-full bg-slate-100 rounded-full h-2">
+      <div id="progress-bar" class="bg-indigo-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const CSRF_TOKEN = '{{ csrf_token }}';
+let selectedType = 'audio';
+
+function selectType(type, el) {
+  selectedType = type;
+  document.querySelectorAll('.type-card').forEach(c => {
+    c.classList.remove('border-indigo-300', 'bg-indigo-50');
+    c.classList.add('border-slate-200');
+  });
+  el.classList.add('border-indigo-300', 'bg-indigo-50');
+  el.classList.remove('border-slate-200');
+
+  ['audio','metrics','marketing','research','abtest'].forEach(t => {
+    document.getElementById('form-' + t).classList.add('hidden');
+  });
+  document.getElementById('form-' + type).classList.remove('hidden');
+}
+
+document.querySelectorAll('input[name="selected_game"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    document.getElementById('new-game-form').classList.toggle('hidden', this.value !== 'new');
+  });
+});
+
+function showFileName(input) {
+  if (input.files.length > 0) {
+    const fn = document.getElementById('file-name');
+    fn.textContent = '✅ ' + input.files[0].name;
+    fn.classList.remove('hidden');
+  }
+}
+
+function handleDrop(event) {
+  event.preventDefault();
+  const file = event.dataTransfer.files[0];
+  if (file) {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('audio-file').files = dt.files;
+    showFileName(document.getElementById('audio-file'));
+  }
+}
+
+function addStatus(msg, progress) {
+  const div = document.createElement('div');
+  div.innerHTML = `<span class="text-green-500">✅</span> ${msg}`;
+  div.className = 'flex items-center gap-2';
+  document.getElementById('status-messages').appendChild(div);
+  document.getElementById('progress-bar').style.width = progress + '%';
+}
+
+async function startUpload() {
+  const gameRadio = document.querySelector('input[name="selected_game"]:checked');
+  let gameId = gameRadio ? gameRadio.value : null;
+
+  if (!gameId) { alert('게임을 선택해주세요.'); return; }
+
+  if (gameId === 'new') {
+    const name = document.getElementById('new-game-name').value.trim();
+    if (!name) { alert('새 게임의 이름을 입력해주세요.'); return; }
+    try {
+      const res = await fetch('/upload/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': CSRF_TOKEN},
+        body: `action=add_game&name=${encodeURIComponent(name)}&genre=${encodeURIComponent(document.getElementById('new-game-genre').value)}`
+      });
+      const data = await res.json();
+      gameId = data.game_id;
+    } catch(e) {
+      alert('게임 추가에 실패했습니다.');
+      return;
+    }
+  }
+
+  const modal = document.getElementById('loading-modal');
+  modal.classList.remove('hidden');
+  document.getElementById('status-messages').innerHTML = '';
+  document.getElementById('progress-bar').style.width = '0%';
+
+  const formData = new FormData();
+  formData.append('game_id', gameId);
+
+  let url = '';
+  if (selectedType === 'audio') {
+    const file = document.getElementById('audio-file').files[0];
+    if (!file) { modal.classList.add('hidden'); alert('음성 파일을 선택해주세요.'); return; }
+    formData.append('audio_file', file);
+    formData.append('meeting_date', document.getElementById('meeting-date').value);
+    document.querySelectorAll('input[name="upload_teams"]:checked').forEach(cb => formData.append('teams', cb.value));
+    url = '/upload/audio/';
+  } else if (selectedType === 'marketing') {
+    formData.append('campaign_name', document.getElementById('mkt-name').value);
+    formData.append('channel', document.getElementById('mkt-channel').value);
+    formData.append('cpi', document.getElementById('mkt-cpi').value);
+    formData.append('roas', document.getElementById('mkt-roas').value);
+    url = '/upload/marketing/';
+  } else if (selectedType === 'research') {
+    formData.append('competitor_name', document.getElementById('res-competitor').value);
+    formData.append('text_content', document.getElementById('res-content').value);
+    url = '/upload/research/';
+  } else if (selectedType === 'abtest') {
+    formData.append('test_name', document.getElementById('ab-name').value);
+    formData.append('control_description', document.getElementById('ab-control').value);
+    formData.append('variant_description', document.getElementById('ab-variant').value);
+    formData.append('control_value', document.getElementById('ab-control-val').value);
+    formData.append('variant_value', document.getElementById('ab-variant-val').value);
+    formData.append('result', document.getElementById('ab-result').value);
+    formData.append('hypothesis_id', document.getElementById('ab-hypothesis').value);
+    url = '/upload/abtest/';
+  } else if (selectedType === 'metrics') {
+    const file = document.getElementById('metrics-file').files[0];
+    if (file) formData.append('file', file);
+    formData.append('metrics_data', document.getElementById('metrics-text').value);
+    url = '/upload/metrics/';
+  }
+
+  const steps = [
+    { msg: '데이터 처리 중...', progress: 25 },
+    { msg: 'AI 엔티티 추출 중...', progress: 50 },
+    { msg: '온톨로지 저장 중...', progress: 75 },
+    { msg: '임베딩 생성 중...', progress: 90 },
+  ];
+
+  let stepIdx = 0;
+  const interval = setInterval(() => {
+    if (stepIdx < steps.length) {
+      addStatus(steps[stepIdx].msg, steps[stepIdx].progress);
+      stepIdx++;
+    }
+  }, 800);
+
+  try {
+    const res = await fetch(url, { method: 'POST', headers: {'X-CSRFToken': CSRF_TOKEN}, body: formData });
+    const data = await res.json();
+    clearInterval(interval);
+
+    if (data.success) {
+      addStatus('완료!', 100);
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        location.href = '/ontology/';
+      }, 1000);
+    } else {
+      clearInterval(interval);
+      modal.classList.add('hidden');
+      alert('오류: ' + (data.error || '알 수 없는 오류'));
+    }
+  } catch(e) {
+    clearInterval(interval);
+    modal.classList.add('hidden');
+    alert('업로드 중 오류가 발생했습니다: ' + e.message);
+  }
+}
+</script>
+{% endblock %}

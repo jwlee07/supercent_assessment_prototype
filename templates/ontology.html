@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}SuperSuit AI{% endblock %}
+{% block nav_ontology %}active{% endblock %}
+
+{% block head_extra %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+<style>
+  #graph-container { height: calc(100vh - 180px); border-radius: 12px; border: 1px solid #e2e8f0; background: white; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="p-8">
+  <div class="flex items-center justify-between mb-4">
+    <h1 class="text-2xl font-bold text-slate-800">온톨로지 그래프</h1>
+    <div class="flex gap-3">
+      <select id="game-filter" onchange="applyFilter()" class="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-600 bg-white">
+        <option value="">🎮 게임 전체</option>
+        {% for game in games %}
+        <option value="{{ game.id }}">{{ game.name }}</option>
+        {% endfor %}
+      </select>
+      <select id="team-filter" onchange="applyFilter()" class="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-600 bg-white">
+        <option value="">👥 팀 전체</option>
+        {% for team in teams %}
+        <option value="{{ team.id }}">{{ team.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div id="graph-container"></div>
+
+  <div class="mt-3 flex gap-5 flex-wrap">
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-indigo-500"></div><span class="text-xs text-slate-500">게임</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-purple-500"></div><span class="text-xs text-slate-500">메카닉</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-amber-400"></div><span class="text-xs text-slate-500">가설</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-green-500"></div><span class="text-xs text-slate-500">결과</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-cyan-500"></div><span class="text-xs text-slate-500">지표</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-pink-500"></div><span class="text-xs text-slate-500">캠페인</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-orange-500"></div><span class="text-xs text-slate-500">경쟁게임</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-slate-400"></div><span class="text-xs text-slate-500">팀</span></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let network;
+const container = document.getElementById('graph-container');
+const options = {
+  nodes: { shape: 'dot', font: { size: 12, multi: true }, borderWidth: 2 },
+  edges: {
+    arrows: { to: { enabled: true, scaleFactor: 0.4 } },
+    color: { color: '#cbd5e1' },
+    smooth: { type: 'continuous' }
+  },
+  physics: { stabilization: { iterations: 200 }, barnesHut: { gravitationalConstant: -10000, springLength: 130 } },
+  interaction: { hover: true, tooltipDelay: 200 }
+};
+
+function loadGraph(params = '') {
+  fetch('/ontology/data/?' + params)
+    .then(r => r.json())
+    .then(data => {
+      const nodes = new vis.DataSet(data.nodes);
+      const edges = new vis.DataSet(data.edges);
+      if (network) network.destroy();
+      network = new vis.Network(container, { nodes, edges }, options);
+    });
+}
+
+function applyFilter() {
+  const gameId = document.getElementById('game-filter').value;
+  const teamId = document.getElementById('team-filter').value;
+  let params = '';
+  if (gameId) params += `game_id=${gameId}&`;
+  if (teamId) params += `team_id=${teamId}`;
+  loadGraph(params);
+}
+
+loadGraph();
+</script>
+{% endblock %}

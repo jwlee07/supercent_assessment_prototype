@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuperSuit AI — 팀 관리</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: 'Noto Sans KR', sans-serif; }
+  .sidebar { background: #1e1b4b; width: 240px; min-height: 100vh; }
+  .nav-item { color: #c7d2fe; padding: 10px 20px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+  .nav-item:hover { background: rgba(255,255,255,0.08); }
+  .nav-item.active { background: rgba(255,255,255,0.15); color: white; }
+  .team-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: box-shadow 0.2s; }
+  .team-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+</style>
+</head>
+<body class="bg-slate-50 flex">
+
+<!-- 사이드바 -->
+<div class="sidebar flex flex-col p-4 fixed h-full">
+  <div class="flex items-center gap-2 mb-8 mt-2">
+    <span class="text-2xl">⚡</span>
+    <span class="text-white font-bold text-lg leading-tight">SuperSuit AI</span>
+  </div>
+  <nav class="flex flex-col gap-1 flex-1">
+    <div class="nav-item" onclick="location.href='01_game_list.html'">🎮 <span>게임 목록</span></div>
+    <div class="nav-item" onclick="location.href='03_ontology.html'">🕸️ <span>온톨로지</span></div>
+    <div class="nav-item" onclick="location.href='04_llm.html'">🤖 <span>LLM</span></div>
+    <div class="nav-item active">👥 <span>팀 관리</span></div>
+  </nav>
+  <button onclick="location.href='06_upload.html'" class="bg-indigo-600 text-white rounded-lg py-2.5 px-4 text-sm font-medium hover:bg-indigo-700 transition">+ 업로드</button>
+</div>
+
+<!-- 메인 콘텐츠 -->
+<div class="ml-60 flex-1 p-8">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-2xl font-bold text-slate-800">팀 관리</h1>
+    <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">+ 팀 추가</button>
+  </div>
+
+  <div class="grid grid-cols-3 gap-5">
+    <!-- 기획팀 -->
+    <div class="team-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-xl">📋</div>
+        <h2 class="text-lg font-bold text-slate-800">기획팀</h2>
+      </div>
+      <div class="flex flex-col gap-2 mb-5">
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">관여 게임</span>
+          <span class="text-sm font-semibold text-slate-700">2개</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">회의 기록</span>
+          <span class="text-sm font-semibold text-slate-700">8건</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">가설 수립</span>
+          <span class="text-sm font-semibold text-slate-700">5개</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-1 mb-4">
+        <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded">Snake Clash!</span>
+        <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded">Dinosaur Universe</span>
+      </div>
+      <button class="w-full border border-slate-200 text-slate-600 py-2 rounded-lg text-sm hover:bg-slate-50 transition">상세보기 →</button>
+    </div>
+
+    <!-- 개발팀 -->
+    <div class="team-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-xl">💻</div>
+        <h2 class="text-lg font-bold text-slate-800">개발팀</h2>
+      </div>
+      <div class="flex flex-col gap-2 mb-5">
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">관여 게임</span>
+          <span class="text-sm font-semibold text-slate-700">2개</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">회의 기록</span>
+          <span class="text-sm font-semibold text-slate-700">5건</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">메카닉 구현</span>
+          <span class="text-sm font-semibold text-slate-700">7개</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-1 mb-4">
+        <span class="text-xs bg-purple-50 text-purple-600 px-2 py-1 rounded">Snake Clash!</span>
+        <span class="text-xs bg-purple-50 text-purple-600 px-2 py-1 rounded">Dinosaur Universe</span>
+      </div>
+      <button class="w-full border border-slate-200 text-slate-600 py-2 rounded-lg text-sm hover:bg-slate-50 transition">상세보기 →</button>
+    </div>
+
+    <!-- 아트팀 -->
+    <div class="team-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center text-xl">🎨</div>
+        <h2 class="text-lg font-bold text-slate-800">아트팀</h2>
+      </div>
+      <div class="flex flex-col gap-2 mb-5">
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">관여 게임</span>
+          <span class="text-sm font-semibold text-slate-700">1개</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">회의 기록</span>
+          <span class="text-sm font-semibold text-slate-700">3건</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">에셋 작업</span>
+          <span class="text-sm font-semibold text-slate-700">진행중</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-1 mb-4">
+        <span class="text-xs bg-pink-50 text-pink-600 px-2 py-1 rounded">Dinosaur Universe</span>
+      </div>
+      <button class="w-full border border-slate-200 text-slate-600 py-2 rounded-lg text-sm hover:bg-slate-50 transition">상세보기 →</button>
+    </div>
+
+    <!-- 마케팅팀 -->
+    <div class="team-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-xl">📣</div>
+        <h2 class="text-lg font-bold text-slate-800">마케팅팀</h2>
+      </div>
+      <div class="flex flex-col gap-2 mb-5">
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">관여 게임</span>
+          <span class="text-sm font-semibold text-slate-700">1개</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">캠페인</span>
+          <span class="text-sm font-semibold text-slate-700">3건</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">평균 CPI</span>
+          <span class="text-sm font-semibold text-green-600">$0.8</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-1 mb-4">
+        <span class="text-xs bg-amber-50 text-amber-600 px-2 py-1 rounded">Snake Clash!</span>
+      </div>
+      <button class="w-full border border-slate-200 text-slate-600 py-2 rounded-lg text-sm hover:bg-slate-50 transition">상세보기 →</button>
+    </div>
+
+    <!-- 데이터팀 -->
+    <div class="team-card">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-cyan-100 rounded-full flex items-center justify-center text-xl">📊</div>
+        <h2 class="text-lg font-bold text-slate-800">데이터팀</h2>
+      </div>
+      <div class="flex flex-col gap-2 mb-5">
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">관여 게임</span>
+          <span class="text-sm font-semibold text-slate-700">2개</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">A/B 테스트</span>
+          <span class="text-sm font-semibold text-slate-700">4건</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-sm text-slate-500">업로드 지표</span>
+          <span class="text-sm font-semibold text-slate-700">12개</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-1 mb-4">
+        <span class="text-xs bg-cyan-50 text-cyan-600 px-2 py-1 rounded">Snake Clash!</span>
+        <span class="text-xs bg-cyan-50 text-cyan-600 px-2 py-1 rounded">Dinosaur Universe</span>
+      </div>
+      <button class="w-full border border-slate-200 text-slate-600 py-2 rounded-lg text-sm hover:bg-slate-50 transition">상세보기 →</button>
+    </div>
+
+    <!-- 팀 추가 카드 -->
+    <div class="team-card border-2 border-dashed border-slate-300 flex items-center justify-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition" style="min-height:200px">
+      <div class="text-center text-slate-400">
+        <div class="text-3xl mb-2">+</div>
+        <div class="text-sm">팀 추가</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

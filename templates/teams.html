@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block title %}SuperSuit AI{% endblock %}
+{% block nav_teams %}active{% endblock %}
+
+{% block content %}
+<div class="p-8">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-2xl font-bold text-slate-800">팀 관리</h1>
+    <button onclick="showAddTeamModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">+ 새 팀</button>
+  </div>
+
+  {% if teams %}
+  <div class="grid grid-cols-3 gap-5">
+    {% for team in teams %}
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-lg">👥</div>
+        <h2 class="text-lg font-bold text-slate-800">{{ team.name }}</h2>
+      </div>
+
+      {% if team.description %}
+      <p class="text-sm text-slate-500 mb-4">{{ team.description }}</p>
+      {% endif %}
+
+      <div class="flex flex-col gap-2 mb-5">
+        <div class="flex justify-between items-center py-1 border-b border-slate-50">
+          <span class="text-sm text-slate-500">관여 게임</span>
+          <span class="text-sm font-semibold text-slate-700">{{ team.game_count }}개</span>
+        </div>
+        <div class="flex justify-between items-center py-1">
+          <span class="text-sm text-slate-500">회의 기록</span>
+          <span class="text-sm font-semibold text-slate-700">{{ team.meeting_count }}건</span>
+        </div>
+      </div>
+
+      <a href="/ontology/?team={{ team.id }}" class="block w-full text-center border border-slate-200 text-slate-600 py-2 rounded-lg text-sm hover:bg-slate-50 transition">
+        온톨로지에서 보기 →
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-20">
+    <div class="text-6xl mb-4">👥</div>
+    <h2 class="text-xl font-semibold text-slate-600 mb-2">팀이 없습니다</h2>
+    <p class="text-slate-400 mb-4">아래 버튼을 눌러 첫 번째 팀을 추가해보세요</p>
+    <button onclick="showAddTeamModal()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition">+ 첫 팀 추가</button>
+  </div>
+  {% endif %}
+</div>
+
+<!-- 팀 추가 모달 -->
+<div id="add-team-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl p-8 w-full max-w-md shadow-2xl">
+    <h2 class="text-xl font-bold text-slate-800 mb-6">새 팀 추가</h2>
+    <div class="mb-4">
+      <label class="text-sm font-medium text-slate-600 mb-1 block">팀 이름 *</label>
+      <input id="team-name" type="text" placeholder="예: 기획팀"
+        class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400">
+    </div>
+    <div class="mb-6">
+      <label class="text-sm font-medium text-slate-600 mb-1 block">설명</label>
+      <input id="team-desc" type="text" placeholder="예: 게임 기획 및 메카닉 설계 담당"
+        class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400">
+    </div>
+    <div id="team-error" class="hidden mb-4 text-sm text-red-500 bg-red-50 border border-red-200 rounded-lg px-3 py-2"></div>
+    <div class="flex gap-3">
+      <button type="button" onclick="hideAddTeamModal()" class="flex-1 border border-slate-200 text-slate-600 py-2.5 rounded-lg text-sm hover:bg-slate-50 transition">취소</button>
+      <button type="button" onclick="addTeam()" class="flex-1 bg-indigo-600 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">추가</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showAddTeamModal() {
+  document.getElementById('team-name').value = '';
+  document.getElementById('team-desc').value = '';
+  document.getElementById('team-error').classList.add('hidden');
+  document.getElementById('add-team-modal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('team-name').focus(), 100);
+}
+function hideAddTeamModal() {
+  document.getElementById('add-team-modal').classList.add('hidden');
+}
+
+async function addTeam() {
+  const name = document.getElementById('team-name').value.trim();
+  if (!name) { showError('팀 이름을 입력해주세요.'); return; }
+
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('description', document.getElementById('team-desc').value.trim());
+
+  try {
+    const res = await fetch('/teams/create/', {
+      method: 'POST',
+      headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+      body: formData,
+    });
+    const data = await res.json();
+    if (data.success) {
+      hideAddTeamModal();
+      location.reload();
+    } else {
+      showError(data.error || '오류가 발생했습니다.');
+    }
+  } catch(e) {
+    showError('요청 중 오류가 발생했습니다.');
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('team-error');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') hideAddTeamModal();
+  if (e.key === 'Enter' && !document.getElementById('add-team-modal').classList.contains('hidden')) addTeam();
+});
+</script>
+{% endblock %}
