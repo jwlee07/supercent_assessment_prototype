@@ -95,10 +95,19 @@ supercent_assessment_prototype/
 │   ├── 04_llm.html
 │   ├── 05_team.html
 │   └── 06_upload.html
+├── submission/              # 발표 자료
+│   ├── presentation.html    # 슬라이드 발표 자료
+│   └── assets/
 ├── .cursor/agents/          # Subagent 프롬프트
 │   ├── product-manager-agent.md
 │   ├── product-designer-agent.md
-│   └── fullstack-developer-agent.md
+│   ├── fullstack-developer-agent.md
+│   └── presentation-agent.md
+├── supersuit_ai/            # Django 프로젝트 설정
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── asgi.py
 ├── core/                    # Django 앱
 │   ├── models.py            # 온톨로지 DB 모델 (11개 노드 + 관계)
 │   ├── views.py             # 화면 + API 뷰
@@ -116,6 +125,7 @@ supercent_assessment_prototype/
 │   ├── ask.html
 │   ├── teams.html
 │   └── upload.html
+├── static/                  # 정적 파일
 ├── fixtures/
 │   └── sample_data.json     # 비어 있음 (사용자가 직접 데이터 등록)
 ├── requirements.txt
