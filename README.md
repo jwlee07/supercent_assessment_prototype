@@ -88,13 +88,6 @@ supercent_assessment_prototype/
 │   └── 03_engineering/      # 기술 구현
 │       ├── Tech_Stack.md
 │       └── Api_Spec.md
-├── mockups/                 # HTML/CSS 목업 (6개 화면)
-│   ├── 01_game_list.html
-│   ├── 02_game_detail.html
-│   ├── 03_ontology.html
-│   ├── 04_llm.html
-│   ├── 05_team.html
-│   └── 06_upload.html
 ├── submission/              # 발표 자료
 │   ├── presentation.html    # 슬라이드 발표 자료
 │   └── assets/
@@ -126,8 +119,6 @@ supercent_assessment_prototype/
 │   ├── teams.html
 │   └── upload.html
 ├── static/                  # 정적 파일
-├── fixtures/
-│   └── sample_data.json     # 비어 있음 (사용자가 직접 데이터 등록)
 ├── requirements.txt
 └── README.md
 ```
