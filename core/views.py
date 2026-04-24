@@ -16,6 +16,7 @@ from core.services import clova_service, gpt_service, ontology_service
 
 
 def game_list(request):
+    """전체 게임 목록과 메카닉·회의·가설 수를 함께 반환."""
     games = Game.objects.annotate(
         mechanic_count=Count('mechanics', distinct=True),
         meeting_count=Count('meetings', distinct=True),
@@ -25,6 +26,7 @@ def game_list(request):
 
 
 def game_detail(request, game_id):
+    """특정 게임의 상세 정보와 온톨로지 그래프 데이터를 반환."""
     game = get_object_or_404(Game, id=game_id)
     mechanics = game.mechanics.all()
     teams = Team.objects.filter(teamgame__game=game)
@@ -43,12 +45,14 @@ def game_detail(request, game_id):
 
 
 def ontology(request):
+    """온톨로지 시각화 페이지 렌더링."""
     games = Game.objects.all()
     teams = Team.objects.all()
     return render(request, 'ontology.html', {'games': games, 'teams': teams})
 
 
 def ontology_data(request):
+    """game_id / team_id 필터로 온톨로지 그래프 데이터를 JSON으로 반환."""
     game_id = request.GET.get('game_id')
     team_id = request.GET.get('team_id')
     data = ontology_service.get_graph_data(
@@ -61,6 +65,7 @@ def ontology_data(request):
 @csrf_exempt
 @require_http_methods(['GET', 'POST'])
 def ask_view(request):
+    """자연어 질문을 벡터 검색 후 LLM에 전달하고 답변을 반환. GET: 질문 폼 / POST: 답변 JSON."""
     if request.method == 'GET':
         return render(request, 'ask.html')
 
@@ -90,6 +95,7 @@ def ask_view(request):
 
 
 def teams(request):
+    """전체 팀 목록과 담당 게임·회의 수를 함께 반환."""
     teams_qs = Team.objects.annotate(
         game_count=Count('teamgame__game', distinct=True),
         meeting_count=Count('meetings', distinct=True),
@@ -100,6 +106,7 @@ def teams(request):
 @csrf_exempt
 @require_http_methods(['POST'])
 def team_create(request):
+    """새 팀을 생성하고 id/name을 JSON으로 반환. 이름 중복 시 400 반환."""
     name = request.POST.get('name', '').strip()
     if not name:
         return JsonResponse({'error': '팀 이름을 입력해주세요.'}, status=400)
@@ -113,6 +120,7 @@ def team_create(request):
 
 
 def upload(request):
+    """데이터 업로드 페이지. POST action='add_game' 시 게임을 생성하고 JSON 반환."""
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'add_game':
@@ -143,6 +151,7 @@ def upload(request):
 @csrf_exempt
 @require_http_methods(['POST'])
 def upload_audio(request):
+    """오디오 파일을 STT로 변환 후 엔티티를 추출해 온톨로지에 저장."""
     game_id = request.POST.get('game_id')
     if not game_id:
         return JsonResponse({'error': '게임을 선택해주세요.'}, status=400)
@@ -201,6 +210,7 @@ def upload_audio(request):
 @csrf_exempt
 @require_http_methods(['POST'])
 def upload_metrics(request):
+    """CSV 또는 텍스트 형식의 지표 데이터를 파싱해 온톨로지에 저장."""
     game_id = request.POST.get('game_id')
     if not game_id:
         return JsonResponse({'error': '게임을 선택해주세요.'}, status=400)
@@ -228,6 +238,7 @@ def upload_metrics(request):
 @csrf_exempt
 @require_http_methods(['POST'])
 def upload_marketing(request):
+    """마케팅 캠페인 데이터를 저장하고 임베딩을 생성해 온톨로지에 연결."""
     game_id = request.POST.get('game_id')
     if not game_id:
         return JsonResponse({'error': '게임을 선택해주세요.'}, status=400)
@@ -262,6 +273,7 @@ def upload_marketing(request):
 @csrf_exempt
 @require_http_methods(['POST'])
 def upload_research(request):
+    """경쟁작 리서치 문서를 저장하고 임베딩을 생성해 온톨로지에 연결."""
     game_id = request.POST.get('game_id')
     if not game_id:
         return JsonResponse({'error': '게임을 선택해주세요.'}, status=400)
@@ -293,6 +305,7 @@ def upload_research(request):
 @csrf_exempt
 @require_http_methods(['POST'])
 def upload_abtest(request):
+    """A/B 테스트 결과를 저장하고 연결된 가설의 검증 상태를 자동 업데이트."""
     game_id = request.POST.get('game_id')
     if not game_id:
         return JsonResponse({'error': '게임을 선택해주세요.'}, status=400)
@@ -333,5 +346,6 @@ def upload_abtest(request):
 
 
 def game_graph_data(request, game_id):
+    """특정 게임의 온톨로지 그래프 데이터를 JSON으로 반환."""
     data = ontology_service.get_graph_data(game_id=game_id)
     return JsonResponse(data)
